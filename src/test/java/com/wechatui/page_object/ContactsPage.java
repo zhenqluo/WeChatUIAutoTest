@@ -15,24 +15,7 @@ public class ContactsPage extends BasePage {
     public ContactsPage(WebDriver driver) {
         super(driver);
     }
-    /*
-    click(By.xpath("//span[text()='添加成员']"));
-    sendKeys(By.name("username"),member.get("username").toString());
-    sendKeys(By.name("english_name"),member.get("english_name").toString());
-    sendKeys(By.name("acctid"),member.get("acctid").toString());
-    click(By.xpath("//input[@name='gender' and @value='2']"));
-    clear(By.name("biz_mail"));
-    sendKeys(By.name("biz_mail"),member.get("biz_mail").toString());
-    clear(By.xpath("//div[@class='ww_telInput']/div/div/input"));
-    sendKeys(By.xpath("//div[@class='ww_telInput']/div/div/input"),member.get("ww_tel").toString());
-    sendKeys(By.name("mobile"),member.get("mobile").toString());
-    sendKeys(By.name("ext_tel"),member.get("ext_tel").toString());
-    sendKeys(By.name("xcx_corp_address"),member.get("xcx_corp_address").toString());
-    sendKeys(By.name("alias"),member.get("alias").toString());
-    sendKeys(By.name("position"),member.get("position").toString());
-    click(By.name("sendInvite"));
-    click(By.linkText("保存"));
-     */
+
     //添加成员页面定位符
     private By userNameLoc = By.name("username");
     private By englishNameLoc = By.name("english_name");

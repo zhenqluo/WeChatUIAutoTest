@@ -16,12 +16,13 @@ import java.util.HashMap;
  */
 public class BasePage {
     public  WebDriver driver;
-    
+    //下面的语句引起空指针异常，改为在构造器中初始化
+    //WebDriverWait wait=new WebDriverWait(driver,10);
+    public WebDriverWait wait;
     public BasePage(WebDriver driver){
         this.driver=driver;
-        System.out.println("BasePage_driver:"+this.driver);
+        wait=new WebDriverWait(this.driver,10);
     }
-    WebDriverWait wait=new WebDriverWait(driver,10);
 
     public void sendKeys(By loc,String words){
         wait.until(ExpectedConditions.visibilityOfElementLocated(loc)).sendKeys(words);

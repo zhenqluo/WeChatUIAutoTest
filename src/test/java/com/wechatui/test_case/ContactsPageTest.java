@@ -57,10 +57,9 @@ public class ContactsPageTest {
     @ParameterizedTest
     @MethodSource
     public void addMemberTest(HashMap<String,Object> member){
-        System.out.println("driver:"+driver);
-        //new MainPage(driver).gotoAddMember().addMember(member);
-        MainPage mainPage=new MainPage(driver);
-        mainPage.gotoAddMember();
+        //System.out.println("driver:"+driver);
+        new MainPage(driver).gotoAddMember().addMember(member);
+        
     }
 
     static List<HashMap<String,Object>> addMemberTest(){
