@@ -34,7 +34,7 @@ public class ContactsPageTest {
         driver.get("https://work.weixin.qq.com/wework_admin/frame");
         if (!cookieFile.exists()){
             try {
-                Thread.sleep(15000);
+                Thread.sleep(25000);
                 Set<Cookie> cookies = driver.manage().getCookies();
                 objectMapper.writeValue(cookieFile,cookies);
             } catch (InterruptedException| IOException e) {
@@ -59,7 +59,6 @@ public class ContactsPageTest {
     public void addMemberTest(HashMap<String,Object> member){
         //System.out.println("driver:"+driver);
         new MainPage(driver).gotoAddMember().addMember(member);
-        
     }
 
     static List<HashMap<String,Object>> addMemberTest(){
@@ -74,6 +73,5 @@ public class ContactsPageTest {
         }
         return members;
     }
-
 
 }

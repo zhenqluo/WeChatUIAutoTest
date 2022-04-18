@@ -3,6 +3,7 @@ package com.wechatui.base;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -38,6 +39,39 @@ public class BasePage {
     public void clear(By loc){
         wait.until(ExpectedConditions.presenceOfElementLocated(loc)).clear();
     }
+    public WebElement getElement(String locMode,String locExpression){
+        WebElement ele=null;
+        if (locMode.equals("by.id")){
+            ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(locExpression)));
+        }
+        if (locMode.equals("by.xpath")){
+            ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locExpression)));
+        }
+        if (locMode.equals("by.name")){
+            ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.name(locExpression)));
+        }
+        return ele;
+    }
+    //提供方法获取元素内部文本
+    public String getElemInnerHTML(String locMode,String locExpression){
+        //getText()不是获取InnerHTML
+        //return getElement(locMode,locExpression).getText();
+        return getElement(locMode,locExpression).getAttribute("innerHTML");
+    }
+    //提供方法获取元素属性值
+    public String getElemAtrributeVlue(String locMode,String locExpression,String attr){
+        return getElement(locMode,locExpression).getAttribute(attr);
+    }
+    //提供方法先切换iframe再获取元素文本
+    public String SwitchFrameAndGetElemInnerHTML(String frameId,String locMode,String locExpression){
+        return null;
+    }
+    //提供方法判断元素是否存在
+    public boolean isElemExit(String locMode,String locExpression){
+        return getElement(locMode,locExpression) == null? false:true;
+    }
+
+
 
 
 }

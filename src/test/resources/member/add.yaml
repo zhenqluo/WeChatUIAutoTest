@@ -1,10 +1,26 @@
--
-  username: 张三
-  english_name: sange
-  acctid: zhang003
-  biz_mail: zhang003_email
-  ww_tel: 852
-  mobile: 15602243341
-  ext_tel:
-  alias: youxiang01@123.com
-  position: 普通员工
+data:  #测试数据，也考虑测试步骤的数据驱动，暂时先完成测试数据的数据驱动
+  -
+    username: 张三
+    english_name: sange
+    acctid: zhang003
+    biz_mail: zhang003_email
+    ww_tel: 852
+    mobile: 15602243341
+    ext_tel:
+    alias: youxiang01@123.com
+    position: 普通员工
+    asserts:
+      #断言支持多重断言，软断言
+      -
+        actual: ['isElemExit','by.xpath','//span[text()="张三"]']
+        matcher: assertTrue
+        reason: 添加普通员工成功
+      #-
+        #actual: {By: id,expression: loc,value: innerHTML}
+        #封装几个函数用于取实际值，需要是使用哪种方式调用？actual: {函数名: [实参列表]}
+        #如在BasePage中封装了一个函数public String getElemAtrributeVlue(String locMode,String locExpression,String attr){}
+        #下面是在yaml中调用该方法的方式，列表中第一个值是方法名，后面的值是该方法的实参
+        #actual: ['方法名getElemAtrributeVlue','实参指定定位方式by.id','实参指定定位表达式','实参指定需要获取哪个属性']
+        #matcher: equalTO
+        #expect: 1
+        #reason: 登录成功
