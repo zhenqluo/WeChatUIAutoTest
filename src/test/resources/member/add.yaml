@@ -1,18 +1,31 @@
 data:  #测试数据，也考虑测试步骤的数据驱动，暂时先完成测试数据的数据驱动
   -
-    username: 张三
-    english_name: sange
-    acctid: zhang003
-    biz_mail: zhang003_email
-    ww_tel: 852
-    mobile: 15602243341
-    ext_tel:
-    alias: youxiang01@123.com
-    position: 普通员工
+    #为统一反序列化得到的CaseObjectModel对象的格式，对入参统一使用HashMap管理
+    #不能使用下面的形式，使用下面的形式时CaseObjectModel需要有username、english_name等属性，等于CaseObject是用例定制的，不是通用的
+#    username: 张三
+#    english_name: sange
+#    acctid: zhang003
+#    biz_mail: zhang003_email
+#    ww_tel: 852
+#    mobile: 15602243341
+#    ext_tel:
+#    alias: youxiang01@123.com
+#    position: 普通员工
+    parameters:
+      username: 张三
+      english_name: sange
+      acctid: zhang003
+      biz_mail: zhang003_email
+      ww_tel: 852
+      mobile: 15602243341
+      ext_tel:
+      alias: youxiang01@123.com
+      position: 普通员工
     asserts:
       #断言支持多重断言，软断言
       -
-        actual: ['isElemExit','by.xpath','//span[text()="张三"]']
+        #actual: ['isElemExit','by.xpath','//span[text()="张三"]']
+        actual: {isElemExist: ['by.xpath','//span[text()="张三"]]}
         matcher: assertTrue
         reason: 添加普通员工成功
       #-

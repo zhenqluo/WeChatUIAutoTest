@@ -67,7 +67,7 @@ public class BasePage {
         return null;
     }
     //提供方法判断元素是否存在
-    public boolean isElemExit(String locMode,String locExpression){
+    public boolean isElemExist(String locMode,String locExpression){
         return getElement(locMode,locExpression) == null? false:true;
     }
 
