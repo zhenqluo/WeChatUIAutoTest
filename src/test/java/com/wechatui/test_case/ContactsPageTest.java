@@ -3,6 +3,7 @@ package com.wechatui.test_case;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.wechatui.model.CaseObjectModel;
 import com.wechatui.page_object.MainPage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,6 +18,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * @author luo
@@ -56,22 +58,23 @@ public class ContactsPageTest {
     }
     @ParameterizedTest
     @MethodSource
-    public void addMemberTest(HashMap<String,Object> member){
+    public void addMemberTest(CaseObjectModel member){
         //System.out.println("driver:"+driver);
-        new MainPage(driver).gotoAddMember().addMember(member);
+        new MainPage(driver).gotoAddMember().addMember(member.getData().get(0).getParameters());
+
     }
 
-    static List<HashMap<String,Object>> addMemberTest(){
-        List<HashMap<String,Object>> members=null;
+    static Stream<CaseObjectModel >addMemberTest(){
+        CaseObjectModel members=null;
         try {
-            TypeReference typeReference = new TypeReference<List<HashMap<String, Object>>>() {};
+            //TypeReference typeReference = new TypeReference<List<CaseObjectModel>>() {};
             InputStream caseStream = ContactsPageTest.class.getResourceAsStream("/member/add.yaml");
             //System.out.println(caseStream);
-            members = objectMapper.readValue(caseStream,typeReference);
+            members = objectMapper.readValue(caseStream,CaseObjectModel.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return members;
+        return Stream.of(members);
     }
 
 }

@@ -21,6 +21,7 @@ public class AssertModel {
         this.actual = actual;
     }
 
+
     public String getMatcher() {
         return matcher;
     }
