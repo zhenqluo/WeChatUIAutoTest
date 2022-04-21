@@ -16,7 +16,10 @@ public class ContactsPage extends BasePage {
         super(driver);
     }
 
-    //添加成员页面定位符
+    //页面URL
+    private String URL = "https://work.weixin.qq.com/wework_admin/frame#contacts";
+    //页面核心元素---添加成员页面定位符
+    private By addButtonLoc = By.linkText("添加成员");
     private By userNameLoc = By.name("username");
     private By englishNameLoc = By.name("english_name");
     private By acctidLoc = By.name("acctid");
@@ -32,6 +35,8 @@ public class ContactsPage extends BasePage {
     private By saveLoc = By.linkText("保存");
 
     public ContactsPage addMember(HashMap<String,Object> member){
+        //open(URL);
+        //sleep(1); 上一行打开URL后要强行等待一段时间，否则会有陈旧元素引用的问题，这里隐藏掉，在BasePage的open函数中统一添加，另外该方法的open(URL)也关闭，只保留mainpage的open(URL)
         judgeToSendKeys(userNameLoc,member,"username");
         judgeToSendKeys(englishNameLoc,member,"english_name");
         judgeToSendKeys(acctidLoc,member,"acctid");
@@ -47,6 +52,7 @@ public class ContactsPage extends BasePage {
         judgeToSendKeys(positionLoc,member,"position");
         click(sendInviteLoc);
         click(saveLoc);
+        sleep(1);
         return this;
     }
 
