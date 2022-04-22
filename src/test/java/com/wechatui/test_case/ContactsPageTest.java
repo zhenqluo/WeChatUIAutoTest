@@ -11,8 +11,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -45,6 +47,7 @@ public class ContactsPageTest extends TestCaseBase{
     static void init(){
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver,5);
         File cookieFile = new File("cookie.yaml");
 
         driver.get("https://work.weixin.qq.com/wework_admin/frame");
@@ -77,10 +80,10 @@ public class ContactsPageTest extends TestCaseBase{
         //测试用例的测试步骤
         new MainPage(driver).gotoAddMember().addMember(caseObject.getData().get(caseObject.getIndex()).getParameters());
         //下面开始写测试用例的断言，测试用例的断言支持多重断言、软断言，参考霍格沃兹接口测试框架StepModel类133-143行和ApiTestCaseModel类的113-116行代码
-        //取断言actual，并断言
+        //取yaml文件中的断言信息asserts，并断言
         ArrayList<AssertModel> asserts = caseObject.getData().get(caseObject.getIndex()).getAsserts();
         //统一断言
-        assertAll("",getAseertExec(asserts).stream());//
+        assertAll("",getAseertExec(asserts).stream());//当ArrayList<Executable>中没有子项的时候该断言会执行通过，整个用例的也是pass的
     }
 
     public static List<CaseObjectModel> addMemberTest(){
@@ -98,7 +101,5 @@ public class ContactsPageTest extends TestCaseBase{
         }
         return testCaseList;
     }
-
-
 
 }

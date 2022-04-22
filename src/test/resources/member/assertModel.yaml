@@ -1,0 +1,19 @@
+
+  -
+    actual: {isElemExist: ["by.xpath","//input[@id='kw']"]}
+    matcher: assertTrue
+    reason: 判断input[@id='kw']是否存在
+  -
+    actual: {isElemExist: ["by.xpath","//input[@id='su']"]}
+    matcher: assertTrue
+    reason: 判断input[@id='su']是否存在
+  -
+    actual: {getElemAtrributeVlue: ["by.xpath","//input[@id='su']","value"]}
+    matcher: equalto
+    expect: 百度一下
+    reason: 取属性的属性值，判断是否与预期相等
+  -
+    actual: {getElemAtrributeVlue: ["by.xpath","//input[@id='su']","value"]}
+    matcher: containsString
+    expect: 一下
+    reason: 取属性的属性值，判断是否包含预期字符串
