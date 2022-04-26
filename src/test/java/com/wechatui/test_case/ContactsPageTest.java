@@ -7,11 +7,8 @@ import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
 import com.wechatui.page_object.MainPage;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
@@ -77,6 +74,8 @@ public class ContactsPageTest extends TestCaseBase{
     @MethodSource
     public void addMemberTest(CaseObjectModel caseObject){
         //System.out.println("driver:"+driver);
+        //测试数据中的变量替换
+
         //测试用例的测试步骤
         new MainPage(driver).gotoAddMember().addMember(caseObject.getData().get(caseObject.getIndex()).getParameters());
         //下面开始写测试用例的断言，测试用例的断言支持多重断言、软断言，参考霍格沃兹接口测试框架StepModel类133-143行和ApiTestCaseModel类的113-116行代码
@@ -91,9 +90,11 @@ public class ContactsPageTest extends TestCaseBase{
         List<CaseObjectModel> testCaseList=null;
         try {
             //TypeReference typeReference = new TypeReference<List<CaseObjectModel>>() {};
-            InputStream caseStream = ContactsPageTest.class.getResourceAsStream("/member/add.yaml");
+            InputStream caseStream = ContactsPageTest.class.getResourceAsStream("/member/add_ramdom.yaml");
             //System.out.println(caseStream);
             caseFileData = objectMapper.readValue(caseStream,CaseObjectModel.class);
+            //变量替换
+            caseFileData.getActualValue();
             //case裂变根据data列表数据个数生成相应用例数量
             testCaseList=caseFileData.testcaseGenerate();
         } catch (IOException e) {

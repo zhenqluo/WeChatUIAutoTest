@@ -1,0 +1,35 @@
+
+data:  #测试数据，也考虑测试步骤的数据驱动，暂时先完成测试数据的数据驱动
+  -
+    parameters:
+      username: ${com.wechatui.utils.FakerUtils#getRandomString#6}
+      english_name: ${com.wechatui.utils.FakerUtils#getRandomString#6}
+      acctid: ${com.wechatui.utils.FakerUtils#getRandomString#10}
+      biz_mail: ${com.wechatui.utils.FakerUtils#getRandomStringWithSuffix#10,_email}
+      ww_tel: 852
+      mobile: ${com.wechatui.utils.FakerUtils#getPhoneNumber}
+      ext_tel:
+      alias: ${com.wechatui.utils.FakerUtils#getRandomStringWithSuffix#10,@163.com}
+      position: 普通员工
+    asserts:
+      -
+        actual: {isElemExist: ["by.xpath","//span[text()='${username}']"]} #text()=${username}根据xpath语法应该有双引号括住${username}
+        matcher: assertTrue
+        reason: 添加普通员工成功
+
+#  -
+#    parameters:
+#      username: 王五
+#      english_name: wuge
+#      acctid: wang005
+#      biz_mail: wang005_email
+#      ww_tel: 852
+#      mobile: 15602240005
+#      ext_tel:
+#      alias: youxiang05@123.com
+#      position: 普通员工
+#    asserts:
+#      -
+#        actual: {isElemExist: ["by.xpath","//span[text()='王五']"]}
+#        matcher: assertTrue
+#        reason: 添加普通员工成功

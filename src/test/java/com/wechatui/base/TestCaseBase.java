@@ -2,6 +2,8 @@ package com.wechatui.base;
 
 import com.wechatui.model.AssertModel;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -27,26 +29,34 @@ public class TestCaseBase {
 
     public WebElement getElement(String locMode, String locExpression){
         WebElement ele=null;
-        if (locMode.equals("by.id")){
-            ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(locExpression)));
+        try {
+            if (locMode.equals("by.id")){
+                ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(locExpression)));
+            }
+            if (locMode.equals("by.xpath")){
+                ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locExpression)));
+            }
+            if (locMode.equals("by.name")){
+                ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.name(locExpression)));
+            }
+        }catch (NoSuchElementException | TimeoutException ex){  //如果元素没定位到会抛出异常，这里进行异常捕获
+            System.out.println("没定位到元素，请核实元素定位方式");
+            System.out.println(ex.getMessage());
         }
-        if (locMode.equals("by.xpath")){
-            ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locExpression)));
-        }
-        if (locMode.equals("by.name")){
-            ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.name(locExpression)));
-        }
+
         return ele;
     }
     //提供方法获取元素内部文本
     public String getElemInnerHTML(String locMode,String locExpression){
         //getText()不是获取InnerHTML
         //return getElement(locMode,locExpression).getText();
-        return getElement(locMode,locExpression).getAttribute("innerHTML");
+        WebElement ele=getElement(locMode,locExpression);
+        return ele == null? null:ele.getAttribute("innerHTML");
     }
     //提供方法获取元素属性值
     public String getElemAtrributeVlue(String locMode,String locExpression,String attr){
-        return getElement(locMode,locExpression).getAttribute(attr);
+        WebElement ele=getElement(locMode,locExpression);
+        return ele == null? null:ele.getAttribute(attr);
     }
     //提供方法先切换iframe再获取元素文本
     public String SwitchFrameAndGetElemInnerHTML(String frameId,String locMode,String locExpression){

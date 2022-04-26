@@ -6,7 +6,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.wechatui.base.BasePage;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.AssertModel;
+import com.wechatui.model.CaseObjectModel;
 import com.wechatui.test_case.ContactsPageTest;
+import com.wechatui.utils.FakerUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.openqa.selenium.WebDriver;
@@ -19,6 +21,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -93,5 +98,76 @@ public class Test01 {
     void test_07(){
         ArrayList<Executable> execList = new ArrayList<>();
         assertAll(execList.stream());  //当execList中没有子项的时候该断言会执行通过，整个用例的也是pass的
+    }
+    @Test
+    void test_08(){
+        HashMap<String,ArrayList<String>> map = new HashMap<>();
+        ArrayList<String>  strArr1 = new ArrayList<>();
+        strArr1.add("uoi${a}dfsfdf${b}jj");
+        strArr1.add("by.xpath");
+        strArr1.add("//span[text()=${username}]");
+        map.put("isElemExist",strArr1);
+        HashMap<String,String> pm = new HashMap<>();
+        pm.put("a","&&&");
+        pm.put("b","***");
+        pm.put("username","law");
+        //现在需要替换上面的map中的${username}
+        for (Map.Entry entry:map.entrySet()){
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue());
+            ArrayList<String> arrayList = new ArrayList<>();
+            ArrayList<String> params = (ArrayList<String>)entry.getValue();
+            //正则表达式匹配${}
+            String varRegEx = "\\$\\{.*?\\}";
+            Pattern pattern = Pattern.compile(varRegEx);
+            Matcher matcher=null;
+            for (String param : params){
+                //判断是否包含${}，若包含则取出${...}中的内容，最后整体替换掉${...}
+                String str = param;
+                if (matcher==null){
+                    matcher=pattern.matcher(param);
+                }else {
+                    matcher.reset(param);
+                }
+                while (matcher.find()){
+                    String temp=matcher.group();
+                    String v = temp.substring(2,temp.length() -1);
+                    str=str.replace(temp,pm.get(v));
+                }
+                arrayList.add(str);
+            }
+            entry.setValue(arrayList);
+        }
+        for (Map.Entry entry:map.entrySet()){
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue());
+            for (String param : (ArrayList<String>)entry.getValue()){
+                System.out.println(param);
+            }
+        }
+    }
+    @Test
+    void test_09(){
+        String varRegEx = "\\$\\{.*?\\}";
+        String str = "uoi${a}dfsfdf${b}jj";
+        Pattern pattern = Pattern.compile(varRegEx);
+        Matcher matcher = pattern.matcher(str);
+        while (matcher.find()){
+            //System.out.println(matcher.group());
+            String temp=matcher.group();
+            String v = temp.substring(2,temp.length() -1);
+            System.out.println(v);
+            str=str.replace(temp,"哈哈");
+            System.out.println(str);
+        }
+    }
+
+    @Test
+    void test_10() throws Exception{
+        ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+        CaseObjectModel caseObjectModel=objectMapper.readValue(Test01.class.getResourceAsStream("/member/add_ramdom.yaml"), CaseObjectModel.class);
+        caseObjectModel.getActualValue();
+        System.out.println(caseObjectModel.getData().get(0).getParameters().get("username"));
+        System.out.println(caseObjectModel.getData().get(1).getParameters().get("username"));
     }
 }
