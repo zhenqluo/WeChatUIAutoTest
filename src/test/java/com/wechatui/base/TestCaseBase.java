@@ -1,6 +1,7 @@
 package com.wechatui.base;
 
 import com.wechatui.model.AssertModel;
+import com.wechatui.utils.LogService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
@@ -8,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.function.Executable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,6 +27,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * 说明：该类是test_case包中的类的基类，即测试用例类的基类
  */
 public class TestCaseBase {
+    private static final Logger logger = LogService.getInstance(TestCaseBase.class).getLogger();
     public static WebDriverWait wait;
     private ArrayList<Executable> assertList = new ArrayList<>();
 
@@ -40,21 +44,24 @@ public class TestCaseBase {
                 ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.name(locExpression)));
             }
         }catch (NoSuchElementException | TimeoutException ex){  //如果元素没定位到会抛出异常，这里进行异常捕获
-            System.out.println("没定位到元素，请核实元素定位方式");
-            System.out.println(ex.getMessage());
+            //System.out.println("没定位到元素，请核实元素定位方式");
+            //System.out.println(ex.getMessage());
+            logger.error("没定位到元素{}:{}",locMode,locExpression);
+            LogService.getInstance(TestCaseBase.class).logException(ex);
         }
-
         return ele;
     }
     //提供方法获取元素内部文本
     public String getElemInnerHTML(String locMode,String locExpression){
         //getText()不是获取InnerHTML
         //return getElement(locMode,locExpression).getText();
+        logger.info("获取元素{}:{}内部文本innerHTML",locMode,locExpression);
         WebElement ele=getElement(locMode,locExpression);
         return ele == null? null:ele.getAttribute("innerHTML");
     }
     //提供方法获取元素属性值
     public String getElemAtrributeVlue(String locMode,String locExpression,String attr){
+        logger.info("获取元素{}:{}内部属性{}属性值",locMode,locExpression,attr);
         WebElement ele=getElement(locMode,locExpression);
         return ele == null? null:ele.getAttribute(attr);
     }
@@ -64,6 +71,7 @@ public class TestCaseBase {
     }
     //提供方法判断元素是否存在
     public boolean isElemExist(String locMode,String locExpression){
+        logger.info("判断元素{}:{}是否存在",locMode,locExpression);
         return getElement(locMode,locExpression) == null? false:true;
     }
     //传入方法名和实参列表，反射执行方法

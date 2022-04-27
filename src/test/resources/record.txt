@@ -58,3 +58,17 @@ ToDo:
 3.完善测试用例：用例数量、提供帮助创建用例的方法，如随机生成手机号
 4.分布式并行测试
 5.持续集成
+
+日志框架参考文章：
+1）log4j2 实际使用详解:（备注：该文章有一个问题实战部分第2步 ”配置log2.xml“ 文件名有误，应该是log4j2.xml，否则找不到该配置文件，具体说明参考下一篇文章）
+https://monday.blog.csdn.net/article/details/71751835?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.pc_relevant_default&utm_relevant_index=2
+2）Log4j2与Slf4j的最佳实践：https://zhuanlan.zhihu.com/p/36554554
+上面第二篇文章的关注点：
+Log4j2使用的几个点：
+1.在Web项目中需要添加 log4j-web jar包。
+2.Log4j允许使用log4jConfiguration参数在web.xml中指定配置文件位置。Log4j将通过以下方式搜索配置文件：
+  1.如果配置了路径（log4jConfiguration参数配置），Log4j将去搜索这个位置。
+  2.如果未配置路径，Log4j将搜索WEB-INF目录中“log4j2”开头的文件。如果找到多个文件，并且存在以“log4j2-name”开头的文件，其中name是Web应用程序的名称，则会使用它。否则，将使用第一个文件。
+  3.在resources目录下搜索配置文件，规则同b。
+3.Log4j2不支持Servlet 2.4及更老的的Web应用程序。
+第2点讲的简单点就是：Log4j2的配置文件名以“log4j2”开头时（例如常见的log4j2.xml），放在WEB-INF和resources的根路径时不需要在web.xml中配置路径，放在其他位置时需要配置路径。

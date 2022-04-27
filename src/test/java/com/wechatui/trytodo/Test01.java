@@ -9,14 +9,20 @@ import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
 import com.wechatui.test_case.ContactsPageTest;
 import com.wechatui.utils.FakerUtils;
+import com.wechatui.utils.LogService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -170,4 +176,34 @@ public class Test01 {
         System.out.println(caseObjectModel.getData().get(0).getParameters().get("username"));
         System.out.println(caseObjectModel.getData().get(1).getParameters().get("username"));
     }
+    @Test
+    void test_11(){
+        WebDriver driver = new ChromeDriver();
+        BasePage bp = new BasePage(driver);
+        driver.get("https://www.baidu.com");
+        bp.sleep(1);
+        bp.sendKeys(By.id("kw"),"hello");
+        bp.click(By.id("su"));
+        bp.sleep(3);
+        bp.closeBrowser();
+    }
+
+
+
+    @Test
+    void test_12(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.baidu.com");
+        driver.manage().window().maximize();
+        try {
+            driver.findElement(By.id("xx")).click();
+        }catch (Exception ex){
+            LogService.getInstance().logException(ex);
+        }
+
+    }
+
+
+
+
 }
