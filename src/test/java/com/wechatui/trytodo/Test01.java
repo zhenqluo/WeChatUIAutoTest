@@ -3,6 +3,7 @@ package com.wechatui.trytodo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.wechatui.api.MemberManage;
 import com.wechatui.base.BasePage;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.AssertModel;
@@ -200,8 +201,19 @@ public class Test01 {
         }catch (Exception ex){
             LogService.getInstance().logException(ex);
         }
-
     }
+    @Test
+    void test_13(){
+        MemberManage memberManage = new MemberManage();
+        memberManage.addMember();
+    }
+    @Test
+    void test_14(){
+        do{
+            System.out.println("aa");
+        }while (!"0".equals("0"));
+    }
+
 
 
 

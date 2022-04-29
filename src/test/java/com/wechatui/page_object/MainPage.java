@@ -16,10 +16,15 @@ public class MainPage extends BasePage {
     private String URL = "https://work.weixin.qq.com/wework_admin/frame#index";
     //页面核心元素---添加成员页面定位符
     private By addMemberLoc=By.xpath("//span[text()='添加成员']");
+    private By menuContactsLoc = By.id("menu_contacts");
 
     public ContactsPage gotoAddMember(){
         open(URL);  //（重新）请求BasePage地址，解决为不重新打开新的浏览器而连续执行两条测试用例的问题
         click(addMemberLoc);
+        return new ContactsPage(driver);
+    }
+    public ContactsPage gotoContacts(){
+        click(menuContactsLoc);
         return new ContactsPage(driver);
     }
 }

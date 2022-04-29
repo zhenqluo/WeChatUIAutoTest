@@ -36,20 +36,20 @@ public class BasePage {
     }
 
     public void sendKeys(By loc,String words){
-        logger.info("正在定位元素{}，输入文本{}",loc.toString(),words);
+        logger.info("正在定位元素[{}]，输入文本{}",loc.toString(),words);
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(loc)).sendKeys(words);
         }catch (Exception ex){
-            logger.error("定位元素{}，输入文本{}失败",loc.toString(),words);
+            logger.error("定位元素[{}]，输入文本{}失败",loc.toString(),words);
             throw new RuntimeException(ex.getMessage());
         }
     }
     public void click(By loc){
-        logger.info("正在定位元素{}进行点击操作",loc.toString());
+        logger.info("正在定位元素[{}]进行点击操作",loc.toString());
         try {
             wait.until(ExpectedConditions.elementToBeClickable(loc)).click();
         }catch (Exception ex){
-            logger.error("定位元素{}进行点击操作失败",loc.toString());
+            logger.error("定位元素[{}]进行点击操作失败",loc.toString());
             throw new RuntimeException(ex.getMessage());
         }
     }
@@ -59,11 +59,11 @@ public class BasePage {
         }
     }
     public void clear(By loc){
-        logger.info("正在定位元素{}进行clear操作",loc.toString());
+        logger.info("正在定位元素[{}]进行clear操作",loc.toString());
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(loc)).clear();
         }catch (Exception ex){
-            logger.error("定位元素{}进行clear操作失败",loc.toString());
+            logger.error("定位元素[{}]进行clear操作失败",loc.toString());
             throw new RuntimeException(ex.getMessage());
         }
     }

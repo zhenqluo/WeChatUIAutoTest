@@ -3,10 +3,12 @@ package com.wechatui.test_case;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.wechatui.api.MemberManage;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
 import com.wechatui.page_object.MainPage;
+import com.wechatui.utils.LogService;
 import org.junit.jupiter.api.*;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +18,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,15 +28,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author luo
  * @create 2022/4/17 下午12:59
  */
 public class ContactsPageTest extends TestCaseBase{
+    private static final Logger logger = LogService.getInstance(ContactsPageTest.class).getLogger();
     //该WebDriver使用static修饰是因为在@BeforeAll中进行了引用，这种情况下能不能把该WebDriver对象放进TestCaseBase.java中用于继承？
 
     static WebDriver driver;
@@ -43,6 +49,7 @@ public class ContactsPageTest extends TestCaseBase{
     @BeforeAll
     static void init(){
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver,5);
         File cookieFile = new File("cookie.yaml");
@@ -101,6 +108,18 @@ public class ContactsPageTest extends TestCaseBase{
             e.printStackTrace();
         }
         return testCaseList;
+    }
+    @Test
+    void deleteMemberTest(){
+        logger.info("开始删除成员...");
+        logger.info("先调用接口产生一个随机成员数据以供删除操作....");
+        //接口创建临时成员
+        MemberManage memberManage = new MemberManage();
+        HashMap<String,Object> memberInfo = memberManage.addMember();
+        //删除成员流程
+        new MainPage(driver).gotoContacts().deleteMember(memberInfo);
+
+        assertFalse(isElemExist("By.xpath","//span[text()='"+memberInfo.get("name")+"']"));
     }
 
 }

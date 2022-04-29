@@ -127,6 +127,7 @@ public class TestCase  {
             sendKeys(loc,map.get(key).toString());
         }
     }
+
     static List<HashMap<String,Object>> test_02() throws Exception{
         ObjectMapper mp = new ObjectMapper(new YAMLFactory());
         TypeReference typeReference=new TypeReference<List<HashMap<String,Object>>>(){};

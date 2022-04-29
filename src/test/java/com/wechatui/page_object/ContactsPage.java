@@ -1,5 +1,6 @@
 package com.wechatui.page_object;
 
+import com.wechatui.api.MemberManage;
 import com.wechatui.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -36,6 +37,11 @@ public class ContactsPage extends BasePage {
     private By positionLoc = By.name("position");
     private By sendInviteLoc = By.name("sendInvite");
     private By saveLoc = By.linkText("保存");
+    //页面核心元素---删除成员页面定位符
+    private By memberSearchInputLoc = By.id("memberSearchInput");
+    private By delMemberLoc = By.className("js_del_member");
+    private By submitLoc = By.linkText("确认");
+
 
     public ContactsPage addMember(HashMap<String,Object> member){
         //open(URL);
@@ -60,6 +66,16 @@ public class ContactsPage extends BasePage {
         logger.info("当前在添加成员页，添加成员{}操作结束",member.get("username"));
         return this;
     }
+    public ContactsPage deleteMember(HashMap<String,Object> memberInfo){
+        //页面删除流程
+        logger.info("删除成员：{}",memberInfo.get("name"));
+        sendKeys(memberSearchInputLoc,memberInfo.get("name").toString());
+        click(delMemberLoc);
+        click(submitLoc);
+
+        return this;
+    }
+
 
 
 

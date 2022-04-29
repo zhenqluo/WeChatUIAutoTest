@@ -33,9 +33,16 @@ public class FakerUtils {
         }
         return sb.toString();
     }
+    public static String getRandomString(int len){
+        return getRandomString(String.valueOf(len));
+    }
     //生成指定长度范围的字符串+前后缀
     public static String getRandomStringWithFix(String lenStr,String prefix,String suffix){
         String str = getRandomString(lenStr);
+        return prefix+str+suffix;
+    }
+    public static String getRandomStringWithFix(int len,String prefix,String suffix){
+        String str = getRandomString(String.valueOf(len));
         return prefix+str+suffix;
     }
     //生成指定长度范围的字符串+后缀
@@ -43,6 +50,11 @@ public class FakerUtils {
         String str = getRandomString(lenStr);
         return str+suffix;
     }
+    public static String getRandomStringWithSuffix(int len,String suffix){
+        String str = getRandomString(String.valueOf(len));
+        return str+suffix;
+    }
+
     //使用时间戳生成随机字符串
 
     //使用线程名+时间戳生成随机字符串（多线程下的随机数生成）
