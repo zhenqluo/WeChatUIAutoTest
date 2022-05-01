@@ -2,6 +2,7 @@ package com.wechatui.page_object;
 
 import com.wechatui.api.MemberManage;
 import com.wechatui.base.BasePage;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -41,6 +42,10 @@ public class ContactsPage extends BasePage {
     private By memberSearchInputLoc = By.id("memberSearchInput");
     private By delMemberLoc = By.className("js_del_member");
     private By submitLoc = By.linkText("确认");
+    //页面核心元素---编辑成员信息
+    private By editLoc = By.linkText("编辑");
+    private By cancleLoc = By.linkText("取消");
+    private By quitPageLoc = By.linkText("离开此页");
 
 
     public ContactsPage addMember(HashMap<String,Object> member){
@@ -75,7 +80,33 @@ public class ContactsPage extends BasePage {
 
         return this;
     }
-
+    /*
+     ** accid:表示要修改的成员id，member表示的是要修改哪些信息
+     */
+    public ContactsPage updateMember(String acctid,HashMap<String,Object> member){
+        //更新成员信息
+        logger.info("更新成员信息：acctid[{}]",acctid);
+        click(memberSearchInputLoc);
+        sendKeys(memberSearchInputLoc,acctid);
+        click(editLoc);
+        judgeToSendKeys(userNameLoc,member,"username");
+        judgeToSendKeys(englishNameLoc,member,"english_name");
+        clear(wwTelLoc);
+        judgeToSendKeys(wwTelLoc,member,"ww_tel");
+        judgeToSendKeys(mobileLoc,member,"mobile");
+        judgeToSendKeys(extTelLoc,member,"ext_tel");
+        judgeToSendKeys(xcxCorpAddressLoc,member,"xcx_corp_address");
+        judgeToSendKeys(aliasLoc,member,"alias");
+        judgeToSendKeys(positionLoc,member,"position");
+        click(saveLoc);
+        sleep(0.2);
+        return this;
+    }
+    public ContactsPage cancelUpdate(){
+        click(cancleLoc);
+        click(quitPageLoc);
+        return this;
+    }
 
 
 

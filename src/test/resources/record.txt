@@ -25,13 +25,26 @@ void updateMember(CaseObjectModel caseObject){
     //3）创建临时成员的方法addMember()如下
     member=addMember()
     //有了成员下面UI界面修改该成员信息
-    在搜索框输入member.acctid
+    在搜索框输入member.acctid，会自动跳转到该成员的详情页
     点击编辑按钮
     根据caseObject修改成员信息
     点击保存按钮
     断言
     //删除上面创建的临时成员
 }
+void updateMember2.0版本(CaseObjectModel caseObject){
+    //涉及修改成员信息用例时，除了一定能修改成功的用例（这种情况可以用随机数解决），还要考虑修改不成功的情况，即修改成与已有成员信息相同，这里再分三种情况
+    //1）除了手机号、alias邮箱（userid或acctid、企业邮箱在页面不能修改），其它修改成都与已有成员信息相同。2）手机号修改成与已有成员相同；3）alias邮箱修改成与现有成员相同
+    //综上，updateMember应该有四个用例。那怎么编写自动化测试用例？下面是步骤设计
+    //1、首先要明确一个已知所有信息的成员
+    //2、yaml文件中写四个测试用例，四个用例说明如上
+    //3、通过接口创建第一步所说的已知所有信息的成员，该步骤是为了创建一个为了updatecase已有的成员
+    //4、通过接口创建一个信息为随机数的成员，通过修改该成员信息完成测试用例的执行，测试用例中包括把这个成员的信息改成和第三步创建的成员是一样的
+    //5、执行修改流程ContactsPage.updateMember(第4步创建的成员的acctid，yaml中读取的修改数据)，修改的是第四步中创建的成员
+    //6、通过接口删除第3步、第4步创建的成员；
+
+}
+
 成员信息结构体 addMember(){
     while(true){
         调用各种Random函数产生随机数，组成请求的json结构（必填参数填上即可）;
@@ -72,3 +85,24 @@ Log4j2使用的几个点：
   3.在resources目录下搜索配置文件，规则同b。
 3.Log4j2不支持Servlet 2.4及更老的的Web应用程序。
 第2点讲的简单点就是：Log4j2的配置文件名以“log4j2”开头时（例如常见的log4j2.xml），放在WEB-INF和resources的根路径时不需要在web.xml中配置路径，放在其他位置时需要配置路径。
+
+
+
+
+测试成员的编辑流程，修改完点击保存按钮，若修改成功保存按钮、取消按钮会消失。因此，我希望能够检查条目不存在。
+不可使用TestCaseBase类中的isExist()方法来判断是否存在，因为该方法的逻辑就是用wait.until(ExpectedConditions.presenceOfElementLocated(定位符By))，
+如果页面的取消按钮消失后，上面逻辑会等待5秒后抛出TimeoutException: Expected condition failed: waiting for presence of element located by: By.linkText: 取消 (tried for 5 second(s) with 500 milliseconds interval)
+虽然这样做通过异常捕获可判断元素不存在，但时间会浪费5s且有异常抛出。还可以使用下面的方式：
+new WebDriverWait(driver, 10).until(ExpectedConditions.invisibilityOfElementLocated(locator));
+参考文章：https://www.it1352.com/968887.html
+
+
+
+
+
+
+
+
+
+
+

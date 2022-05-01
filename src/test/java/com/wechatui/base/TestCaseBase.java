@@ -2,10 +2,7 @@ package com.wechatui.base;
 
 import com.wechatui.model.AssertModel;
 import com.wechatui.utils.LogService;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.function.Executable;
@@ -28,21 +25,33 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class TestCaseBase {
     private static final Logger logger = LogService.getInstance(TestCaseBase.class).getLogger();
+    public static WebDriver driver;
     public static WebDriverWait wait;
+    //本想多创建一个专门用于等待元素消失的wait，设置等待时长为1s，但在实际测试时发现1s有时会出现元素仍然存在从而导致异常抛出的情况，所以没必要单独设置这个wait或者说这个wait的等待时长不能太短
+    public static WebDriverWait disppearWait;
     private ArrayList<Executable> assertList = new ArrayList<>();
 
+    //返回定位方式，yaml文件中通过字符串指定，这里把字符串转换为真正的By
+    public By getLocType(String locMode, String locExpression){
+        By locType = null;
+        if (locMode.equals("by.id")){
+            locType = By.id(locExpression);
+        }
+        if (locMode.equals("by.xpath")){
+            locType = By.xpath(locExpression);
+        }
+        if (locMode.equals("by.name")){
+            locType = By.name(locExpression);
+        }
+        if (locMode.equals("by.linkText")){
+            locType = By.linkText(locExpression);
+        }
+        return locType;
+    }
     public WebElement getElement(String locMode, String locExpression){
         WebElement ele=null;
         try {
-            if (locMode.equals("by.id")){
-                ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(locExpression)));
-            }
-            if (locMode.equals("by.xpath")){
-                ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locExpression)));
-            }
-            if (locMode.equals("by.name")){
-                ele = wait.until(ExpectedConditions.presenceOfElementLocated(By.name(locExpression)));
-            }
+            ele = wait.until(ExpectedConditions.presenceOfElementLocated(getLocType(locMode,locExpression)));
         }catch (NoSuchElementException | TimeoutException ex){  //如果元素没定位到会抛出异常，这里进行异常捕获
             //System.out.println("没定位到元素，请核实元素定位方式");
             //System.out.println(ex.getMessage());
@@ -73,6 +82,17 @@ public class TestCaseBase {
     public boolean isElemExist(String locMode,String locExpression){
         logger.info("判断元素{}:{}是否存在",locMode,locExpression);
         return getElement(locMode,locExpression) == null? false:true;
+    }
+    //提供方法判断元素是否不存在,比较适合页面元素消失的情况，如保存成员信息，点击保存后若成功则页面的保存/取消按钮会消失
+    public boolean isElemDisappear(String locMode,String locExpression){
+        boolean isExist = true;
+        try {
+            isExist=disppearWait.until(ExpectedConditions.invisibilityOfElementLocated(getLocType(locMode,locExpression)));
+        }catch (TimeoutException ex){ //注意invisibilityOfElementLocated条件如果元素不存在返回true，但如果元素存在，不是返回false，而是抛出异常，所以需要对异常进行捕获并返回false
+            logger.info("元素[{}:{}]仍在页面存在",locMode,locExpression);
+            isExist = false;
+        }
+        return isExist;
     }
     //传入方法名和实参列表，反射执行方法
     public Object invokeMethod(String methodName, ArrayList<String> params){

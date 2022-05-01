@@ -3,6 +3,7 @@ package com.wechatui.trytodo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.wechatui.api.CommonOpr;
 import com.wechatui.api.MemberManage;
 import com.wechatui.base.BasePage;
 import com.wechatui.base.TestCaseBase;
@@ -17,6 +18,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 /**
@@ -84,7 +89,7 @@ public class Test01 {
     @Test
     void test_05(){
         ContactsPageTest contactsPageTest = new ContactsPageTest();
-        contactsPageTest.addMemberTest();
+        contactsPageTest.addMemberTest(null);
     }
     @Test
     void test_06() throws Exception{
@@ -205,7 +210,7 @@ public class Test01 {
     @Test
     void test_13(){
         MemberManage memberManage = new MemberManage();
-        memberManage.addMember();
+        memberManage.addMember(null);
     }
     @Test
     void test_14(){
@@ -213,7 +218,83 @@ public class Test01 {
             System.out.println("aa");
         }while (!"0".equals("0"));
     }
+    //java.lang.IllegalArgumentException: argument type mismatch  使用反射时报的错，下面验证下啥问题
+    @Test
+    void test_15(){
+        Object[] params1 = {10};
+        Object[] params2 = {new Integer(10)};
+        String[] params3 = {"10"} ;
+        try {
 
+            Method method=Arrays.stream(Class.forName("com.wechatui.utils.FakerUtils").getMethods()).filter(m->m.getName().equals("getRandomString")).findFirst().get();//通过反射获取方法
+            System.out.println(method);
+            //Object actual1 = method.invoke(null,new Integer(10));//执行成功
+            //Object actual2 = method.invoke(null,10);//执行成功
+//            method.invoke(null,"10"); 执行报错
+            //method.invoke(null,params1); //执行报错
+            method.invoke(null,params2);//执行报错
+            //method.invoke(null,params3);
+
+            //System.out.println((String) actual1);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    void test_16() throws Exception{
+        for (int i = 0; i < 1; i++) {
+            Method method=Arrays.stream(Class.forName("com.wechatui.utils.FakerUtils").getMethods()).filter(m->m.getName().equals("getRandomStringS")).findFirst().get();//通过反射获取方法
+            System.out.println(method);
+            String[] strings = {"10"};
+            System.out.println(method.invoke(null,strings));
+        }
+        System.out.println("+++++++++++");
+        Stream<Method> methodStream= Arrays.stream(Class.forName("com.wechatui.utils.FakerUtils").getMethods()).filter(m->m.getName().equals("getRandomStringS"));
+        for (Object method : methodStream.toArray()){
+            System.out.println((Method)method);
+        }
+
+    }
+    @Test
+    void test_17(){
+        String addMemberURL = "https://qyapi.weixin.qq.com/cgi-bin/user/create?access_token="+ CommonOpr.getAccessToken();
+        //接口创建临时成员
+        MemberManage memberManage = new MemberManage();
+        //接口创建已知信息的成员
+        HashMap<String,Object> specificMember = createSpecificMemberInfo();
+        given().
+                contentType("application/json").
+                body(specificMember).
+        when().
+                post(addMemberURL).
+        then().log().all();
+    }
+
+    private HashMap<String,Object> createSpecificMemberInfo(){
+        HashMap<String,Object> specificMember = new HashMap<>();
+        specificMember.put("userid", "zhang003");
+        specificMember.put("name","张三");
+        specificMember.put("alias","youxiang01@123.com");
+        specificMember.put("mobile","15602243341");
+        //由于企业邮箱涉及到邮箱回收，邮箱回收接口不知道是什么，不可彻底删除，为避免添加成员失败，该成员的企业邮箱由随机数生成
+        //specificMember.put("biz_mail","zhang003_mail@gqjk3.wecom.work");
+        specificMember.put("biz_mail",FakerUtils.getRandomStringWithSuffix(8,"@gqjk3.wecom.work"));
+        specificMember.put("to_invite",false);
+        specificMember.put("department",1);
+        return specificMember;
+    }
+    @Test
+    void test_18(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.baidu.com");
+        WebDriverWait wait=new WebDriverWait(driver,5);
+        Boolean bl = wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("ss")));
+        System.out.println(bl);
+    }
 
 
 

@@ -24,6 +24,7 @@ public class MainPage extends BasePage {
         return new ContactsPage(driver);
     }
     public ContactsPage gotoContacts(){
+        open(URL);
         click(menuContactsLoc);
         return new ContactsPage(driver);
     }

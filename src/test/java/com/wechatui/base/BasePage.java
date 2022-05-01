@@ -36,6 +36,7 @@ public class BasePage {
     }
 
     public void sendKeys(By loc,String words){
+        clear(loc); //进行文本输入前无论啥清空先清空
         logger.info("正在定位元素[{}]，输入文本{}",loc.toString(),words);
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(loc)).sendKeys(words);
@@ -43,6 +44,7 @@ public class BasePage {
             logger.error("定位元素[{}]，输入文本{}失败",loc.toString(),words);
             throw new RuntimeException(ex.getMessage());
         }
+        sleep(0.1);  //为方便调试临时添加
     }
     public void click(By loc){
         logger.info("正在定位元素[{}]进行点击操作",loc.toString());
@@ -52,6 +54,7 @@ public class BasePage {
             logger.error("定位元素[{}]进行点击操作失败",loc.toString());
             throw new RuntimeException(ex.getMessage());
         }
+        sleep(0.1);//为方便观察调试临时添加
     }
     public void judgeToSendKeys(By loc, HashMap<String,Object> map, String key){
         if (map.get(key) != null){//map.get(key) != null包含了没key和有key但没value的情况
@@ -78,5 +81,6 @@ public class BasePage {
         logger.info("关闭浏览器");
         driver.quit();
     }
+
 
 }

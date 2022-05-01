@@ -2,14 +2,14 @@
 data:  #测试数据，也考虑测试步骤的数据驱动，暂时先完成测试数据的数据驱动
   -
     parameters:
-      username: ${com.wechatui.utils.FakerUtils#getRandomString#6}
-      english_name: ${com.wechatui.utils.FakerUtils#getRandomString#6}
-      acctid: ${com.wechatui.utils.FakerUtils#getRandomString#10}
-      biz_mail: ${com.wechatui.utils.FakerUtils#getRandomStringWithSuffix#10,_email}
+      username: ${com.wechatui.utils.FakerUtils#getRandomStringS#6}
+      english_name: ${com.wechatui.utils.FakerUtils#getRandomStringS#6}
+      acctid: ${com.wechatui.utils.FakerUtils#getRandomStringS#10}
+      biz_mail: ${com.wechatui.utils.FakerUtils#getRandomStringWithSuffixS#10,_email}
       ww_tel: 852
       mobile: ${com.wechatui.utils.FakerUtils#getPhoneNumber}
       ext_tel:
-      alias: ${com.wechatui.utils.FakerUtils#getRandomStringWithSuffix#10,@163.com}
+      alias: ${com.wechatui.utils.FakerUtils#getRandomStringWithSuffixS#10,@163.com}
       position: 普通员工
     asserts:
       -

@@ -78,7 +78,7 @@ public class CaseObjectModel {
                     }
                     try {
                         Method method=Arrays.stream(Class.forName(strArray[0]).getMethods()).filter(m->m.getName().equals(strArray[1])).findFirst().get();//通过反射获取方法
-                        actual = method.invoke(null,params);//方法执行
+                        actual = method.invoke(null,(Object[]) params);//方法执行
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (InvocationTargetException e) {

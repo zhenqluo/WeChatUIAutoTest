@@ -1,0 +1,50 @@
+data:  #测试数据，也考虑测试步骤的数据驱动，暂时先完成测试数据的数据驱动
+  -  #测试用例：修改的信息与现有成员都不同，使用随机数的方式，预期修改成功
+    parameters:
+      username: ${com.wechatui.utils.FakerUtils#getRandomStringS#6}
+      english_name: ${com.wechatui.utils.FakerUtils#getRandomStringS#6}
+      ww_tel: 852
+      mobile: ${com.wechatui.utils.FakerUtils#getPhoneNumber}
+      ext_tel:
+      alias: ${com.wechatui.utils.FakerUtils#getRandomStringWithSuffixS#10,@163.com}
+      position: 普通员工
+    asserts:
+      -
+        actual: {isElemDisappear: ["by.linkText","取消"]}
+        matcher: assertTrue
+        reason: 更新成功，预期页面没有取消按钮
+
+  - #测试用例：修改的信息与现有成员相同，预期：修改成功
+    parameters:
+      username: 张三
+      english_name: sange
+      position: 普通员工
+    asserts:
+      -
+        actual: {isElemDisappear: ["by.linkText","取消"]}
+        matcher: assertTrue
+        reason: 更新成功，预期页面没有取消按钮
+
+  - #测试用例，修改的信息与现有成员mobile相同，预期修改失败
+    parameters:
+      mobile: 15602243341
+    asserts:
+      -
+        actual: {isElemExist: ["by.xpath","//div[contains(text(),'占有')]"]}
+        matcher: assertTrue
+        reason: 更新失败，预期页面存在提示：该手机已被xxx占有
+
+  - #测试用例，修改的信息与现有成员邮箱相同，预期修改失败
+    parameters:
+      alias: youxiang01@123.com
+    asserts:
+      -
+        actual: {isElemExist: ["by.xpath","//div[contains(text(),'占有')]"]}
+        matcher: assertTrue
+        reason: 更新失败，预期页面存在提示：该邮箱被xxx占有
+
+#设计UI自动化测试用例的断言时需要考虑的一点是：用例流程执行->断言。流程执行完会立刻进行断言，而流程执行的效果是延时的，所以这里会造成断言误判失败的情况。
+#如上面第一个修改成员信息成功的用例，用例流程执行的最后一步是点击保存按钮，然后立刻断言。点击保存按钮后，过一段时间，保存按钮和取消按钮会不见，如果断言
+#设计成判断取消按钮不存在则pass。但由于用例流程执行后需过一段时间才会出现保存按钮和取消按钮不见的效果，使用执行断言时可能取消按钮还在，从而导致用例fail，
+#但实际流程是执行成功的。
+

@@ -9,8 +9,9 @@ import java.util.Random;
  * 生成随机字符串的三种方式：https://blog.csdn.net/qq_33443020/article/details/109646372
  */
 public class FakerUtils {
+    //注意，getRandomString()方法有两个重载方法，所以使用反射获取getRandomString方法并执行invoke时需要注意，为区分，把其中一个方法的方法名后面+S
     //生成指定长度范围的字符串
-    public static String getRandomString(String lenStr){
+    public static String getRandomStringS(String lenStr){
         Integer length=new Integer(lenStr.trim());
         Random random=new Random();
         StringBuffer sb=new StringBuffer();
@@ -34,24 +35,24 @@ public class FakerUtils {
         return sb.toString();
     }
     public static String getRandomString(int len){
-        return getRandomString(String.valueOf(len));
+        return getRandomStringS(String.valueOf(len));
     }
     //生成指定长度范围的字符串+前后缀
-    public static String getRandomStringWithFix(String lenStr,String prefix,String suffix){
-        String str = getRandomString(lenStr);
+    public static String getRandomStringWithFixS(String lenStr,String prefix,String suffix){
+        String str = getRandomStringS(lenStr);
         return prefix+str+suffix;
     }
     public static String getRandomStringWithFix(int len,String prefix,String suffix){
-        String str = getRandomString(String.valueOf(len));
+        String str = getRandomStringS(String.valueOf(len));
         return prefix+str+suffix;
     }
     //生成指定长度范围的字符串+后缀
-    public static String getRandomStringWithSuffix(String lenStr,String suffix){
-        String str = getRandomString(lenStr);
+    public static String getRandomStringWithSuffixS(String lenStr,String suffix){
+        String str = getRandomStringS(lenStr);
         return str+suffix;
     }
     public static String getRandomStringWithSuffix(int len,String suffix){
-        String str = getRandomString(String.valueOf(len));
+        String str = getRandomStringS(String.valueOf(len));
         return str+suffix;
     }
 
