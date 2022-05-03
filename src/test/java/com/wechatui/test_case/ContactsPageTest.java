@@ -98,7 +98,7 @@ public class ContactsPageTest extends TestCaseBase{
     }
 
     static List<CaseObjectModel> addMemberTest(){
-        return readYamlCaseData("/member/add_ramdom.yaml"); //使用该行代码会报错，暂时不知啥原因
+        return readYamlCaseData("/member/add_ramdom.yaml");
     }
     static List<CaseObjectModel> readYamlCaseData(String filePath){
         CaseObjectModel caseFileData=null;
@@ -173,6 +173,22 @@ public class ContactsPageTest extends TestCaseBase{
         specificMember.put("to_invite",false);
         specificMember.put("department",1);
         return specificMember;
+    }
+    @ParameterizedTest
+    @MethodSource
+    void importTemplateTest(CaseObjectModel caseObject){
+        //todo:导入前数据清理,读入文件数据，根据账号调用接口删除数据。或通过生成随机数的方式生成批量数据文件，最后恢复数据
+        new MemberManage().deleteMember("lisi");
+        String filePath = caseObject.getData().get(0).getParameters().get("filePath").toString();
+        logger.info("批量导入成员测试，导入文件地址：{}",filePath);
+        new MainPage(driver).gotoContacts().importTemplate(filePath);
+        //取yaml文件中的断言信息asserts，并断言
+        ArrayList<AssertModel> asserts = caseObject.getData().get(caseObject.getIndex()).getAsserts();
+        //统一断言
+        assertAll("",getAseertExec(asserts).stream());
+    }
+    static List<CaseObjectModel> importTemplateTest(){
+        return readYamlCaseData("/member/import.yaml");
     }
 
 }

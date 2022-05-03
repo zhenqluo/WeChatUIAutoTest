@@ -3,13 +3,14 @@ package com.wechatui.page_object;
 import com.wechatui.api.MemberManage;
 import com.wechatui.base.BasePage;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Retention;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author luo
@@ -46,6 +47,18 @@ public class ContactsPage extends BasePage {
     private By editLoc = By.linkText("编辑");
     private By cancleLoc = By.linkText("取消");
     private By quitPageLoc = By.linkText("离开此页");
+    //页面核心元素--文件导入
+    private By bulkButtonLoc = By.xpath("//div[text()='批量导入/导出']");
+    private By fileImportLoc = By.xpath("//div[@class='ww_operationBar']/div/div/ul/li/a[contains(text(),'文件导入')]");
+    private By templateImportLoc = By.linkText("填写通讯录模板后导入");
+    private By fileInputLoc = By.xpath("//input[@class='ww_fileImporter_fileContainer_uploadInputMask']");
+    private By selectDepLoc = By.linkText("修改");
+    private By deleteSelectedLoc = By.xpath("//span[contains(@class,'js_delete')]");
+    //cssSelector常用定位方法:https://www.cnblogs.com/ixtao/p/13412020.html
+    private By liTreeCloseLoc = By.cssSelector("div[id='partyTree'][style='display: block;'] li[class*='jstree-close']>i");   //jstree-closed是折叠的，找到所有的折叠的部门，展开部门树结构
+    private By allDepLoc = By.cssSelector("div[id='partyTree'][style='display: block;'] a");  //css selector定位，用于找到所有部门，包括子部门 [父元素>子元素] 是找直接子元素、[父元素 子元素] 是找后代元素
+    private By selectedSubmitLoc = By.linkText("确认");
+    private By importButtonLoc = By.linkText("导入");
 
 
     public ContactsPage addMember(HashMap<String,Object> member){
@@ -105,6 +118,41 @@ public class ContactsPage extends BasePage {
     public ContactsPage cancelUpdate(){
         click(cancleLoc);
         click(quitPageLoc);
+        return this;
+    }
+    public ContactsPage importTemplate(String filePath){
+        click(bulkButtonLoc);
+        click(fileImportLoc);
+        click(templateImportLoc);
+        sendKeys(fileInputLoc,filePath);
+        click(selectDepLoc);
+        //先点击取消右边已选择的部门
+        List<WebElement> delEles = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(deleteSelectedLoc));
+        for (WebElement ele : delEles){
+            try {
+                ele.click();
+            }catch (ElementNotInteractableException ex){  //上面找出的delEles包含两个元素，其中一个是不可交互的，不可交互的元素会抛出ElementNotInteractableException异常，这里进行处理
+            }
+        }
+        //打开左边部门列表所有折叠的部门
+        List<WebElement> closedDeps=wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(liTreeCloseLoc));
+        for (WebElement ele : closedDeps){
+            ele.click();
+        }
+        //找出所有部门，单击任意一个
+        List<WebElement> deps = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(allDepLoc));
+        int index = (int) (Math.random()*(deps.size()));
+        WebElement ele = deps.get(index);
+        ele.click();
+        //点击选择部门页面的确认按钮
+        List<WebElement> selectedSubmitEles = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(selectedSubmitLoc));
+        for (WebElement elem : selectedSubmitEles){
+            try {
+                elem.click();
+            }catch (ElementNotInteractableException| StaleElementReferenceException ex){   //通过异常捕获忽略不可交互元素
+            }
+        }
+        click(importButtonLoc);
         return this;
     }
 

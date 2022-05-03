@@ -1,0 +1,11 @@
+data:
+  -
+    parameters:
+      filePath: /Users/wuyuanyan/Downloads/通讯录批量导入模板.xlsx
+    asserts:
+      -
+        actual: {isElemExist: ["by.xpath","//div[contains(text(),'导入成功')]"]}
+        matcher: assertTrue
+        reason: 导入成功
+
+
