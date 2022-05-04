@@ -144,6 +144,7 @@ public class ContactsPage extends BasePage {
         int index = (int) (Math.random()*(deps.size()));
         WebElement ele = deps.get(index);
         ele.click();
+        logger.info("共有{}部门，随机点击第{}个",deps.size(),index+1);
         //点击选择部门页面的确认按钮
         List<WebElement> selectedSubmitEles = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(selectedSubmitLoc));
         for (WebElement elem : selectedSubmitEles){

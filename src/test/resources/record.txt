@@ -104,6 +104,12 @@ https://blog.csdn.net/qq_39704682/article/details/85596644
 断言后是否要点击完成按钮？按理最好断言后点击完成按钮，点击完成按钮后会跳回通信录页面。但这样会需要在yaml文件中增加一个断言后操作。现在暂时不需这样做，因为
 当前在跑测试用例是都是从MainPage开始的，MainPage的每一个操作都是先open(URL)，会重新请求主页
 
+cssSelector常用定位方法：https://www.cnblogs.com/ixtao/p/13412020.html
+
+PartyPage中的添加部门流程中选择上级部门，由于选择部门是下拉选择且不是input标签，是否有办法做到部门选择的参数化？即在yaml文件中指定父部门。
+思路：yaml中指定父部门名称，如销售部。先通过css Selector获取所有的部门列表List<WebElement>，再循环比较WebElement的innerHTML和yaml中指定的部门名称，
+相同则匹配到，全都不匹配则父部门为id=1的部门。
+
 
 
 

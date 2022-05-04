@@ -1,18 +1,29 @@
 package com.wechatui.base;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.wechatui.model.AssertModel;
+import com.wechatui.model.CaseObjectModel;
+import com.wechatui.test_case.ContactsPageTest;
 import com.wechatui.utils.LogService;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.function.Executable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 import static org.hamcrest.CoreMatchers.*;
@@ -30,6 +41,60 @@ public class TestCaseBase {
     //本想多创建一个专门用于等待元素消失的wait，设置等待时长为1s，但在实际测试时发现1s有时会出现元素仍然存在从而导致异常抛出的情况，所以没必要单独设置这个wait或者说这个wait的等待时长不能太短
     public static WebDriverWait disppearWait;
     private ArrayList<Executable> assertList = new ArrayList<>();
+    public static ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+
+
+    @BeforeAll
+    static void init(){
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver,5);
+        disppearWait = new WebDriverWait(driver,3);
+        File cookieFile = new File("cookie.yaml");
+
+        driver.get("https://work.weixin.qq.com/wework_admin/frame");
+        if (!cookieFile.exists()){
+            try {
+                Thread.sleep(25000);
+                Set<Cookie> cookies = driver.manage().getCookies();
+                objectMapper.writeValue(cookieFile,cookies);
+            } catch (InterruptedException| IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            try {
+                TypeReference typeReference = new TypeReference<List<HashMap<String, Object>>>() {};
+                List<HashMap<String, Object>> cookies= objectMapper.readValue(cookieFile, typeReference);
+                cookies.forEach(cookie->{
+                    //System.out.println(cookie.get("name").toString()+" = "+cookie.get("value").toString());
+                    driver.manage().addCookie(new Cookie(cookie.get("name").toString(),cookie.get("value").toString()));
+                });
+                driver.navigate().refresh();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static List<CaseObjectModel> readYamlCaseData(String filePath){
+        CaseObjectModel caseFileData=null;
+        List<CaseObjectModel> testCaseList=null;
+        try {
+            //TypeReference typeReference = new TypeReference<List<CaseObjectModel>>() {};
+            InputStream caseStream = ContactsPageTest.class.getResourceAsStream(filePath);
+            //System.out.println(caseStream);
+            caseFileData = objectMapper.readValue(caseStream,CaseObjectModel.class);
+            //变量替换
+            caseFileData.getActualValue();
+            //case裂变根据data列表数据个数生成相应用例数量
+            testCaseList=caseFileData.testcaseGenerate();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return testCaseList;
+    }
+
 
     //返回定位方式，yaml文件中通过字符串指定，这里把字符串转换为真正的By
     public By getLocType(String locMode, String locExpression){

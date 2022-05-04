@@ -23,10 +23,16 @@ public class MainPage extends BasePage {
         click(addMemberLoc);
         return new ContactsPage(driver);
     }
+    //从gotoContacts和gotoPartyManage其实都是跳转到同一个页面，但这里分为两个方法，是因为在设计用例时把这个页面分为两个部分：部门管理、成员管理
     public ContactsPage gotoContacts(){
         open(URL);
         click(menuContactsLoc);
         return new ContactsPage(driver);
+    }
+    public PartyPage gotoPartyManage(){
+        open(URL);
+        click(menuContactsLoc);
+        return new PartyPage(driver);
     }
 }
 

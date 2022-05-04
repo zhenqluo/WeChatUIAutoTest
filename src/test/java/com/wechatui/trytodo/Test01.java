@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.wechatui.api.CommonOpr;
 import com.wechatui.api.MemberManage;
+import com.wechatui.api.PartyManage;
 import com.wechatui.base.BasePage;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.AssertModel;
@@ -294,6 +295,28 @@ public class Test01 {
         WebDriverWait wait=new WebDriverWait(driver,5);
         Boolean bl = wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("ss")));
         System.out.println(bl);
+    }
+    @Test
+    void test_19(){
+        for (int i = 0; i < 1000; i++) {
+            int index = (int) (Math.random()*(6));
+            System.out.println(index+1);
+        }
+
+    }
+    @Test
+    void test_20(){
+        HashMap<String,Object> partyInfo = new HashMap<>();
+        partyInfo.put("name","销售部");
+        partyInfo.put("parentid",1);
+        partyInfo.put("id",788);
+        System.out.println(new PartyManage().createParty(partyInfo));
+        partyInfo.clear();
+        partyInfo.put("name","团队B");
+        partyInfo.put("parentid",788);
+        partyInfo.put("id",789);
+        System.out.println(new PartyManage().createParty(partyInfo));
+
     }
 
 

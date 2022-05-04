@@ -1,0 +1,28 @@
+data:
+  #前提：已存在销售部
+  -
+    parameters:
+      name: ${com.wechatui.utils.FakerUtils#getRandomStringS#8}
+      ppn: 销售部
+    asserts:
+      -
+        actual: {isElemExist: ["by.xpath","//span[@id='party_name' and text()='${name}']"]}
+        matcher: assertTrue
+        reason: 添加部门成功
+        #todo:上面是使用了isElemExist来进行断言，还可以使用下面的方式来进行断言，但目前没实现对expect字段getActual
+        #actual: {getElemInnerHTML: ["by.xpath","//span[@id='party_name']"]}
+        #matcher: equalTo
+        #expect: ${name}
+
+ #前提：销售部已存在团队B
+  -
+    parameters:
+      name: 团队B
+      ppn: 销售部
+    asserts:
+      -
+        actual: {isElemExist: ["by.xpath","//div[@id='js_tips' and text()='该部门已存在']"]}
+        matcher: assertTrue
+        reason: 添加部门失败，该部门已存在
+
+#TODO：上面提到的前提是否可在yaml中指定

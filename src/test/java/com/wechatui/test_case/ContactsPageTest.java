@@ -46,42 +46,10 @@ public class ContactsPageTest extends TestCaseBase{
     //该WebDriver使用static修饰是因为在@BeforeAll中进行了引用，这种情况下能不能把该WebDriver对象放进TestCaseBase.java中用于继承？
 
 
-    static ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
 
 
 
-    @BeforeAll
-    static void init(){
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver,5);
-        disppearWait = new WebDriverWait(driver,3);
-        File cookieFile = new File("cookie.yaml");
 
-        driver.get("https://work.weixin.qq.com/wework_admin/frame");
-        if (!cookieFile.exists()){
-            try {
-                Thread.sleep(25000);
-                Set<Cookie> cookies = driver.manage().getCookies();
-                objectMapper.writeValue(cookieFile,cookies);
-            } catch (InterruptedException| IOException e) {
-                e.printStackTrace();
-            }
-        }else{
-            try {
-                TypeReference typeReference = new TypeReference<List<HashMap<String, Object>>>() {};
-                List<HashMap<String, Object>> cookies= objectMapper.readValue(cookieFile, typeReference);
-                cookies.forEach(cookie->{
-                    //System.out.println(cookie.get("name").toString()+" = "+cookie.get("value").toString());
-                    driver.manage().addCookie(new Cookie(cookie.get("name").toString(),cookie.get("value").toString()));
-                });
-                driver.navigate().refresh();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
     @ParameterizedTest
     @MethodSource
     public void addMemberTest(CaseObjectModel caseObject){
@@ -100,23 +68,7 @@ public class ContactsPageTest extends TestCaseBase{
     static List<CaseObjectModel> addMemberTest(){
         return readYamlCaseData("/member/add_ramdom.yaml");
     }
-    static List<CaseObjectModel> readYamlCaseData(String filePath){
-        CaseObjectModel caseFileData=null;
-        List<CaseObjectModel> testCaseList=null;
-        try {
-            //TypeReference typeReference = new TypeReference<List<CaseObjectModel>>() {};
-            InputStream caseStream = ContactsPageTest.class.getResourceAsStream(filePath);
-            //System.out.println(caseStream);
-            caseFileData = objectMapper.readValue(caseStream,CaseObjectModel.class);
-            //变量替换
-            caseFileData.getActualValue();
-            //case裂变根据data列表数据个数生成相应用例数量
-            testCaseList=caseFileData.testcaseGenerate();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return testCaseList;
-    }
+
     @Test
     void deleteMemberTest(){
         logger.info("开始删除成员...");
