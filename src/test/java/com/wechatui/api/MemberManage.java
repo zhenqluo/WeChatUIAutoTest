@@ -47,6 +47,12 @@ public class MemberManage {
         logger.info("调用接口创建成员：{}",memberInfo.toString());
         return memberInfo;
     }
+    //addMember的重载方法，在指定部门下创建随机成员
+    public HashMap<String,Object> addMember(int departmentId){
+        HashMap<String,Object> memberInfo = getRamdomMemberInfo();
+        memberInfo.put("department",departmentId);
+        return addMember(memberInfo);
+    }
     public HashMap<String,Object> getRamdomMemberInfo(){
         HashMap<String,Object> memberInfo = new HashMap<>();
         memberInfo.put("userid", FakerUtils.getRandomString(6));

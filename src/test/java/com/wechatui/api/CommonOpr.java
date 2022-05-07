@@ -1,6 +1,8 @@
 package com.wechatui.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import com.wechatui.model.ApiResponseModel;
 import com.wechatui.utils.LogService;
 import org.slf4j.Logger;
 
@@ -13,6 +15,8 @@ import static io.restassured.RestAssured.given;
 public class CommonOpr {
     private static final Logger logger = LogService.getInstance(CommonOpr.class).getLogger();
     private static String accessToken = null;
+    private static ObjectMapper objectMapper = new ObjectMapper();
+
     private static void gettoken(){
         String corpid = "wwaac24df3e4ed9d6c";
         String corpsecret = "npvQpdfmnETDu7NIq2nFROJnrvNMe06FwLl-AenAXaY";
@@ -30,6 +34,16 @@ public class CommonOpr {
             gettoken();
         }
         return accessToken;
+    }
+    public static ApiResponseModel toApiResModel(String res){
+        ApiResponseModel resModel = null;
+        try {
+            resModel = objectMapper.readValue(res, ApiResponseModel.class);
+        }catch (Exception ex){
+            LogService.getInstance(PartyManage.class).logException(ex);
+        }
+
+        return resModel;
     }
 
 }

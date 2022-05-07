@@ -1,10 +1,7 @@
 package com.wechatui.test_case;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import com.wechatui.api.MemberManage;
-import com.wechatui.base.BasePage;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
@@ -16,23 +13,13 @@ import org.junit.jupiter.api.*;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.slf4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -142,5 +129,6 @@ public class ContactsPageTest extends TestCaseBase{
     static List<CaseObjectModel> importTemplateTest(){
         return readYamlCaseData("/member/import.yaml");
     }
+
 
 }

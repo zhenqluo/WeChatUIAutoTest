@@ -81,6 +81,9 @@ public class BasePage {
         logger.info("关闭浏览器");
         driver.quit();
     }
+    public void refresh(){
+        driver.navigate().refresh();
+    }
 
 
 }

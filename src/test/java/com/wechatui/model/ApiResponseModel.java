@@ -6,12 +6,13 @@ import java.util.HashMap;
 /**
  * @author luo
  * @create 2022/5/4 下午8:32
- * 说明：该类用于反序列化微信接口请求返回的json数据
+ * 说明：该类用于反序列化微信接口请求返回的json数据、存放请求数据
  */
 public class ApiResponseModel {
     public int errcode;
     public String errmsg;
     public int id;
+    public HashMap<String,Object> reqData; //用于存放请求数据，如PartyManage类的createParty(HashMap<String,Object> partyInfo)方法
 
     public int getId() {
         return id;
@@ -46,6 +47,14 @@ public class ApiResponseModel {
 
     public void setDepartment(ArrayList<HashMap<String, Object>> department) {
         this.department = department;
+    }
+
+    public HashMap<String, Object> getReqData() {
+        return reqData;
+    }
+
+    public void setReqData(HashMap<String, Object> reqData) {
+        this.reqData = reqData;
     }
 
     @Override
