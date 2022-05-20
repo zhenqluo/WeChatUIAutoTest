@@ -1,6 +1,7 @@
 
 data:  #测试数据，也考虑测试步骤的数据驱动，暂时先完成测试数据的数据驱动
   -
+    caseTitle: 正常添加成员
     parameters:
       username: ${com.wechatui.utils.FakerUtils#getRandomStringS#6}
       english_name: ${com.wechatui.utils.FakerUtils#getRandomStringS#6}

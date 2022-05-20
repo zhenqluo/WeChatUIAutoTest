@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
+import com.wechatui.model.ExtensionModel;
 import com.wechatui.test_case.ContactsPageTest;
 import com.wechatui.utils.LogService;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -34,6 +36,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @create 2022-04-2022/4/20 15:37
  * 说明：该类是test_case包中的类的基类，即测试用例类的基类
  */
+@ExtendWith(ExtensionModel.class)
 public class TestCaseBase {
     private static final Logger logger = LogService.getInstance(TestCaseBase.class).getLogger();
     public static WebDriver driver;

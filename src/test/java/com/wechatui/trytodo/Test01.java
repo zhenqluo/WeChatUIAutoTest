@@ -10,11 +10,17 @@ import com.wechatui.base.BasePage;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
+import com.wechatui.page_object.MainPage;
 import com.wechatui.test_case.ContactsPageTest;
 import com.wechatui.utils.FakerUtils;
 import com.wechatui.utils.LogService;
+import io.qameta.allure.Story;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -30,22 +36,20 @@ import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author luo
  * @create 2022/4/17 上午9:09
  */
-public class Test01 {
+public class Test01 extends TestCaseBase{
     public static void main(String[] args) {
         HashMap<String ,Object> map = new HashMap<>();
         map.put("a",1);
@@ -318,6 +322,27 @@ public class Test01 {
         System.out.println(new PartyManage().createParty(partyInfo));
 
     }
+    @Test
+    void test_21(){
+        assertAll(()->assertTrue(true),
+                ()->assertTrue(false),
+                ()->assertTrue(true));
+    }
+    @RepeatedTest(10)
+    void test_22(){
+        new MainPage(driver).gotoPartyManage().deletePartySubmit("LPH61Uwc");
+    }
+    @Test
+    void test_23(){
+        driver.get("https://blog.csdn.net/weixin_42609477/article/details/108330294");
+        long st = System.currentTimeMillis();
+        new BasePage(driver).refresh();
+        long end = System.currentTimeMillis();
+        System.out.println((end-st)/1000);
+    }
+
+
+
 
 
 

@@ -131,4 +131,14 @@ public class CaseObjectModel {
         //return null;
     }
 
+    //重写toString方法读取用例标题caseTitle在用例中进行展示
+    @Override
+    public String toString(){
+        String title = this.getData().get(index).getCaseTitle();
+        if ( title != null){
+            return title;
+        }else {
+            return super.toString();
+        }
+    }
 }

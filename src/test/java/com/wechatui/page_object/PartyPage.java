@@ -3,6 +3,7 @@ package com.wechatui.page_object;
 import com.wechatui.base.BasePage;
 import com.wechatui.utils.LogService;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -48,6 +49,7 @@ public class PartyPage extends BasePage {
 
     public PartyPage addParty(HashMap<String,Object> partyData){
         logger.info("开始添加部门，父部门{}下添加子部门{}",partyData.get("ppn").toString(),partyData.get("name").toString());
+        refresh();//因为打开页面后准备测试用例数据时调用了接口改变了后台数据，使用需要重新刷新页面
         click(addButtonLoc);
         click(createPartyLoc);
         sendKeys(nameLoc,partyData.get("name").toString());
@@ -101,11 +103,46 @@ public class PartyPage extends BasePage {
         refresh(); //打开微信企业页面-->调用接口创建部门/成员-->需再次刷新页面才能加载出接口新创建的部门和成员
         //找到所有折叠的部门并点击展开
         //TODO：当前只能展开二级部门，三重以上部门无法展开，所以无法对三级以上部门进行删除操作
+        /*
+        //这种方式容易抛出StaleElementReferenceException异常,采用另外一种写法，参考：http://t.zoukankan.com/z-x-y-p-9805272.html 但该例子中采用这种方式可能不行，因为存在多级部门的情况
         List<WebElement> treeCloseds = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(deLiTreeCloseLoc));
+        int ind=0;
         for (WebElement ele : treeCloseds){
             //ele.click();
+            System.out.println(ind++);
             wait.until(ExpectedConditions.elementToBeClickable(ele)).click();
+        }*/
+        /* --这种方式可以展开所有部门层级，也可解决StaleElementReferenceException异常，但每次都要等待抛出NoSuchElement异常，如何处理这个等待时间？
+        WebDriverWait wait = new WebDriverWait(this.driver,1);
+        int pos = 0;
+        try {
+            while (wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(deLiTreeCloseLoc)).size()>0){
+                System.out.println(pos++);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(deLiTreeCloseLoc)).get(0).click();
+            }
+        }catch (Exception ex){
+
+        }*/
+
+        //    -- 利用异常捕获的方式处理StaleElementReferenceException
+        try{
+            List<WebElement> treeCloseds = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(deLiTreeCloseLoc));
+            int ind=0;
+            for (WebElement ele : treeCloseds){
+                //ele.click();
+                System.out.println(ind++);
+                wait.until(ExpectedConditions.elementToBeClickable(ele)).click();
+            }
+        }catch (StaleElementReferenceException ex){ //捕获StaleElementReferenceException异常并处理（重复执行）
+            List<WebElement> treeCloseds = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(deLiTreeCloseLoc));
+            int ind=0;
+            for (WebElement ele : treeCloseds){
+                //ele.click();
+                System.out.println(ind++);
+                wait.until(ExpectedConditions.elementToBeClickable(ele)).click();
+            }
         }
+
         //获取所有部门WebElements，获取innerHTML与实参partyName比较，找出需要删除的部门
         List<WebElement> allPartys = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(deAllPartyLoc));
         int index = 0;
@@ -124,14 +161,15 @@ public class PartyPage extends BasePage {
         //Actions actions = new Actions(driver);
         //actions.moveToElement(allPartys.get(index)).perform();
         //为了让后面的三个点显示出来，上面使用了把鼠标移入悬浮的方式，这种方式在实际运行过程中非常容易失败，会造成下面的opMenu.click()时提示selenium.ElementNotInteractableException: element not interactable
-        allPartys.get(index).click(); //通过直接点击的方式让后面的三个点显示出来
+        //allPartys.get(index).click(); //通过直接点击的方式让后面的三个点显示出来
+        //上面直接调用元素的click()还是会出现点击不到的情况，再改为下面的方式试下
+        wait.until(ExpectedConditions.elementToBeClickable(allPartys.get(index))).click();
         //通过父元素找到子元素span,span对应的是部门后面的三个点，该元素包含在a标签中
         WebElement opMenu = allPartys.get(index).findElement(opPartyLoc);
         logger.info(opMenu.toString());
+
         opMenu.click();
         //wait.until(ExpectedConditions.elementToBeClickable(allPartys.get(index).findElement(opPartyLoc))).click();
-
-
     }
 
 

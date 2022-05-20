@@ -9,6 +9,9 @@ import com.wechatui.page_object.ContactsPage;
 import com.wechatui.page_object.MainPage;
 import com.wechatui.utils.FakerUtils;
 import com.wechatui.utils.LogService;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,21 +27,20 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+
 /**
  * @author luo
  * @create 2022/4/17 下午12:59
  */
+@Feature("成员管理")
 public class ContactsPageTest extends TestCaseBase{
     private static final Logger logger = LogService.getInstance(ContactsPageTest.class).getLogger();
     //该WebDriver使用static修饰是因为在@BeforeAll中进行了引用，这种情况下能不能把该WebDriver对象放进TestCaseBase.java中用于继承？
 
 
-
-
-
-
     @ParameterizedTest
     @MethodSource
+    @Story("添加成员")
     public void addMemberTest(CaseObjectModel caseObject){
         //System.out.println("driver:"+driver);
         //测试数据中的变量替换
@@ -57,6 +59,8 @@ public class ContactsPageTest extends TestCaseBase{
     }
 
     @Test
+    @Story("删除成员")
+    @DisplayName("删除成员")
     void deleteMemberTest(){
         logger.info("开始删除成员...");
         logger.info("先调用接口产生一个随机成员数据以供删除操作....");
@@ -70,6 +74,7 @@ public class ContactsPageTest extends TestCaseBase{
     }
     @ParameterizedTest
     @MethodSource
+    @Story("更新成员信息")
     void updateMemberTest(CaseObjectModel caseObject) throws Exception{
         logger.info("开始更新成员...");
         logger.info("先调用接口产生一个随机成员数据以供更新操作....");
@@ -115,6 +120,7 @@ public class ContactsPageTest extends TestCaseBase{
     }
     @ParameterizedTest
     @MethodSource
+    @Story("通过文件批量导入成员")
     void importTemplateTest(CaseObjectModel caseObject){
         //todo:导入前数据清理,读入文件数据，根据账号调用接口删除数据。或通过生成随机数的方式生成批量数据文件，最后恢复数据
         new MemberManage().deleteMember("lisi");

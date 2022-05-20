@@ -1,5 +1,6 @@
 data:  #测试数据，也考虑测试步骤的数据驱动，暂时先完成测试数据的数据驱动
   -  #测试用例：修改的信息与现有成员都不同，使用随机数的方式，预期修改成功
+    caseTitle: 更新信息与已存在的成员信息不同，更新成功
     parameters:
       username: ${com.wechatui.utils.FakerUtils#getRandomStringS#6}
       english_name: ${com.wechatui.utils.FakerUtils#getRandomStringS#6}
@@ -15,6 +16,7 @@ data:  #测试数据，也考虑测试步骤的数据驱动，暂时先完成测
         reason: 更新成功，预期页面没有取消按钮
 
   - #测试用例：修改的信息与现有成员相同，预期：修改成功
+    caseTitle: 更新姓名/英文名与现有员工相同，更新成功
     parameters:
       username: 张三
       english_name: sange
@@ -26,6 +28,7 @@ data:  #测试数据，也考虑测试步骤的数据驱动，暂时先完成测
         reason: 更新成功，预期页面没有取消按钮
 
   - #测试用例，修改的信息与现有成员mobile相同，预期修改失败
+    caseTitle: 更新手机号与现有员工相同，更新失败
     parameters:
       mobile: 15602243341
     asserts:
@@ -35,6 +38,7 @@ data:  #测试数据，也考虑测试步骤的数据驱动，暂时先完成测
         reason: 更新失败，预期页面存在提示：该手机已被xxx占有
 
   - #测试用例，修改的信息与现有成员邮箱相同，预期修改失败
+    caseTitle: 更新邮箱与现有员工相同，更新失败
     parameters:
       alias: youxiang01@123.com
     asserts:

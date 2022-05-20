@@ -10,6 +10,15 @@ import java.util.HashMap;
 public class CaseDataObjectModel {
     private HashMap<String,Object> parameters;
     private ArrayList<AssertModel> asserts;
+    private String caseTitle;
+
+    public String getCaseTitle() {
+        return caseTitle;
+    }
+
+    public void setCaseTitle(String caseTitle) {
+        this.caseTitle = caseTitle;
+    }
 
     public HashMap<String, Object> getParameters() {
         return parameters;

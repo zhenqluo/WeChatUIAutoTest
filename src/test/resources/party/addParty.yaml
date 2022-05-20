@@ -1,6 +1,7 @@
 data:
   #前提：已存在销售部
   -
+    caseTitle: 在销售部下新增部门成功
     parameters:
       name: ${com.wechatui.utils.FakerUtils#getRandomStringS#8}
       ppn: 销售部
@@ -16,6 +17,7 @@ data:
 
  #前提：销售部已存在团队B
   -
+    caseTitle: 同一个父部门下添加同名部门，新增失败
     parameters:
       name: 团队B
       ppn: 销售部

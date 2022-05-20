@@ -10,6 +10,10 @@ import com.wechatui.model.CaseObjectModel;
 import com.wechatui.page_object.MainPage;
 import com.wechatui.utils.FakerUtils;
 import com.wechatui.utils.LogService;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,15 +30,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author luo
  * @create 2022/5/3 下午11:57
  */
+@Feature("部门管理")
 public class PartyPageTest extends TestCaseBase {
     private final static Logger logger = LogService.getInstance(PartyPageTest.class).getLogger();
 
     @ParameterizedTest
     @MethodSource
+    @Story("添加部门")
     public void addPartyTest(CaseObjectModel caseObject){
         //数据准备，调用部门创建接口，创建销售部，及子部门团队B
         //todo:这个数据还是写死的，后期思考下怎么参数化
         PartyManage pm = new PartyManage();
+        pm.deleteParty(789);
+        pm.deleteParty(788);
         HashMap<String,Object> partyInfo = new HashMap<>();
         partyInfo.put("name","销售部");
         partyInfo.put("parentid",1);
@@ -45,7 +53,7 @@ public class PartyPageTest extends TestCaseBase {
         partyInfo.put("parentid",788);
         partyInfo.put("id",789);
         ApiResponseModel result2 = pm.createParty(partyInfo);
-        if ((result1.getErrmsg().contains("department existed") || result1.getErrmsg()=="created") && (result2.getErrmsg().contains("department existed") || result2.getErrmsg()=="created") ){
+        if ((result1.getErrmsg().contains("department existed") || result1.getErrmsg().equals("created")) && (result2.getErrmsg().contains("department existed") || result2.getErrmsg().equals("created")) ){
             //测试步骤
             logger.info("正在测试创建部门，数据准备成功，满足测试条件，开始测试");
             new MainPage(driver).gotoPartyManage().addParty(caseObject.getData().get(caseObject.getIndex()).getParameters());
@@ -68,7 +76,10 @@ public class PartyPageTest extends TestCaseBase {
     ** 删除部门测试用例
      */
     //根部门->部门A->子部门A1（A1包含成员m1），删除部门A1，预期删除失败
+    @Story("删除部门")
+    @DisplayName("删除包含成员的部门，删除失败")
     @Test
+    //@RepeatedTest(5)
     public void deletePartyATest(){
         //数据准备：调用接口创建两个部门，两个部门有父子关系，再在子部门添加一个成员
         String pPartyName = FakerUtils.getRandomString(8);
@@ -89,6 +100,8 @@ public class PartyPageTest extends TestCaseBase {
     }
     //根部门->部门A->子部门A1，删除部门A，预期删除失败
     @Test
+    @Story("删除部门")
+    @DisplayName("删除有子部门的部门，删除失败")
     public void deletePartyBTest(){
         //数据准备：调用接口创建两个部门，两个部门有父子关系
         String pPartyName = FakerUtils.getRandomString(8);
@@ -107,6 +120,8 @@ public class PartyPageTest extends TestCaseBase {
     }
     //根部门->部门A，删除部门A，预期删除成功
     @Test
+    @Story("删除部门")
+    @DisplayName("删除的部门既没有子部门也没有成员，删除成功")
     public void deletePartyCTest(){
         //数据准备：调用接口在根部门下创建一个子部门
         String cPartyName = FakerUtils.getRandomString(8);
@@ -130,6 +145,8 @@ public class PartyPageTest extends TestCaseBase {
     * ----部门a
     * --部门B
      */
+    @Story("更新部门")
+    @DisplayName("修改部门名称与已存在的所有部门名称不一样，修改成功")
     @Test
     public void updateParty1Test(){
         //测试数据准备
@@ -143,6 +160,8 @@ public class PartyPageTest extends TestCaseBase {
         //数据恢复
         pm.deleteParty(res.getId());
     }
+    @Story("更新部门")
+    @DisplayName("修改部门名称与已存在的同级部门名称一样，修改失败")
     @Test
     public void updateParty2Test(){
         //测试数据准备--创建两个同级部门
@@ -157,7 +176,10 @@ public class PartyPageTest extends TestCaseBase {
         pm.deleteParty(res1.getId()); //todo:使用try catch finally来保证数据还原？
         pm.deleteParty(res2.getId());
     }
+    @Story("更新部门")
+    @DisplayName("修改部门名称与下级部门名称一样，修改成功")
     @Test
+    //@RepeatedTest(10) //为调试StaleElementReferenceException添加的重复测试
     public void updateParty3Test(){
         //测试数据准备
         PartyManage pm = new PartyManage();
