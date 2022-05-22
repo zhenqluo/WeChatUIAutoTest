@@ -16,6 +16,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,19 +41,23 @@ public class BaiduTest extends BaseT{
     void ExceptionTest(){
         try{
             driver.get("https://www.baidu.com");
+            logger.info("打开百度");
             driver.findElement(By.id("kw")).sendKeys("hha");
+            logger.info("定位输入框");
             driver.findElement(By.id("ss")).click();
         }catch (Exception ex){
-            LogService.getInstance(BaiduTest.class).logException(ex);
+            //LogService.getInstance(BaiduTest.class).logException(ex);
+            //logger.error("哦哦哦哦哦哦哦",ex);
+            logger.error(ex.toString(),ex);
             throw ex;
         }
-
-
     }
     @Test
     void successTest(){
         Assertions.assertEquals(3,3);
     }
+
+
 
     public static WebDriver getDriver() {
         return driver;

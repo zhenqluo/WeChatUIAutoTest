@@ -4,8 +4,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.spi.LocationAwareLogger;
+
 /**
  * 功能说明：日志记录服务类
  * 修改说明：
@@ -53,3 +56,8 @@ public final class LogService {
 
 
 }
+
+/*
+slf4j、logback、log4j打印出的日志行号不正确，如何获取正确的行号（调用者类里的行号）:http://www.zyiz.net/tech/detail-231921.html
+
+ */

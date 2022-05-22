@@ -14,6 +14,7 @@ import com.wechatui.page_object.MainPage;
 import com.wechatui.test_case.ContactsPageTest;
 import com.wechatui.utils.FakerUtils;
 import com.wechatui.utils.LogService;
+import com.wechatui.utils.PathUtil;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
@@ -340,6 +341,7 @@ public class Test01 extends TestCaseBase{
         long end = System.currentTimeMillis();
         System.out.println((end-st)/1000);
     }
+
 
 
 

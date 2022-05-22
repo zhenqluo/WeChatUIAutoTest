@@ -2,7 +2,7 @@ data:
   -
     caseTitle: 提供导入文件批量添加成员
     parameters:
-      filePath: /Users/wuyuanyan/Downloads/通讯录批量导入模板.xlsx
+      filePath: /member/通讯录批量导入模板.xlsx   #使用的是相对路径（项目根路径，详看Test02.test_01），分隔符/或\都行，第一个字符是否有分隔符都可以
     asserts:
       -
         actual: {isElemExist: ["by.xpath","//div[contains(text(),'导入成功')]"]}

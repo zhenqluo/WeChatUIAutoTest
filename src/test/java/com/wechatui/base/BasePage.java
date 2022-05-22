@@ -33,7 +33,7 @@ public class BasePage {
     public void open(String URL){
         logger.info("打开网站：{}",URL);
         driver.get(URL);
-        sleep(0.5);
+        //sleep(0.5);
     }
 
     public void sendKeys(By loc,String words){
@@ -45,7 +45,7 @@ public class BasePage {
             logger.error("定位元素[{}]，输入文本{}失败",loc.toString(),words);
             throw new RuntimeException(ex.getMessage());
         }
-        sleep(0.5);  //为方便调试临时添加
+        //sleep(0.5);  //为方便调试临时添加
     }
     public void click(By loc){
         logger.info("正在定位元素[{}]进行点击操作",loc.toString());
@@ -57,7 +57,7 @@ public class BasePage {
             // 如果不抛出，因为所有操作都捕抓了异常，导致下一个流程步骤可继续执行，假如每一个流程都是元素定位，导致不断的等待超时抛出异常，最后需超长等待才能发现流程问题
             throw new RuntimeException(ex.getMessage());
         }
-        sleep(0.5);//为方便观察调试临时添加
+        //sleep(0.5);//为方便观察调试临时添加
     }
     public void judgeToSendKeys(By loc, HashMap<String,Object> map, String key){
         if (map.get(key) != null){//map.get(key) != null包含了没key和有key但没value的情况

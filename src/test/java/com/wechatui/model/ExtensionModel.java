@@ -4,6 +4,9 @@ import com.wechatui.utils.LogService;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
+import org.junit.platform.engine.TestExecutionResult;
+import org.junit.platform.launcher.TestExecutionListener;
+import org.junit.platform.launcher.TestIdentifier;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.slf4j.Logger;
@@ -19,14 +22,27 @@ import static io.qameta.allure.Allure.addAttachment;
  */
 public class ExtensionModel implements TestWatcher {
     Logger logger = LogService.getInstance(ExtensionModel.class).getLogger();
+    /*
+    因为在TestWatcher集中处理异常时打印出的日志行号不正确（因为打印的是调用日志输出函数所在行，所以打印出的行号都是一样的），不利于排错
+    所以在不在TestWatcher中进行异常日志处理
+     */
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {  //测试用例断言失败
+        logger.info("执行用例标题[{}],执行结果{}\n",context.getDisplayName(), "Test Failed");
         screenShot(context,cause,"TestFailedScreenshot");
     }
     @Override
+    public void testSuccessful(ExtensionContext context) {//测试执行中止，如执行用例过程中抛出异常
+        logger.info("执行用例标题[{}],执行结果{}\n",context.getDisplayName(),"Test Success");
+    }
+    @Override
     public void testAborted(ExtensionContext context, Throwable cause) { //测试执行中止，如执行用例过程中抛出异常
+        logger.info("执行用例标题[{}],执行结果{}\n",context.getDisplayName(),"Test Aborted");
         screenShot(context,cause,"TestAbortedScreenshot");
     }
+
+
+
     private void screenShot(ExtensionContext context, Throwable cause, String name){
         Object requiredTestInstance = context.getRequiredTestInstance();
         try {
@@ -41,6 +57,11 @@ public class ExtensionModel implements TestWatcher {
         }
     }
 }
+/*
+Junit5+extentreports生成测试报告：参考其中DefaultTestWatcher（定义扩展模型，继承了TestWatcher，同时重写里面的方法，用来捕获日志断言执行情况）
+https://blog.csdn.net/sumlyl/article/details/109759516
+如果测试失败，则用于调试输出的Log4j附加程序：https://www.it1352.com/2156814.html
+ */
 /*
 java的反射机制提供了两种方法：
 getDeclaredFields() ：该方法能获取到本类的所有属性，包括private，protected和public，但不能获取到继承的父类的属性。

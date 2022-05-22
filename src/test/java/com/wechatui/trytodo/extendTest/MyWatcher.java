@@ -69,7 +69,8 @@ public class MyWatcher implements TestWatcher {
         System.out.println("用例执行失败");
         Class clzz = context.getRequiredTestClass();
         if (cause instanceof Exception ){
-            LogService.getInstance(clzz).logException((Exception) cause);
+            //LogService.getInstance(clzz).logException((Exception) cause);
+            LogService.getInstance(clzz).getLogger().error("呵呵呵呵呵呵",cause);
         }
 
         Object requiredTestInstance = context.getRequiredTestInstance();

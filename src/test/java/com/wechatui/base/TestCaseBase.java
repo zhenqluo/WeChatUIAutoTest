@@ -10,6 +10,7 @@ import com.wechatui.test_case.ContactsPageTest;
 import com.wechatui.utils.LogService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -37,6 +38,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * 说明：该类是test_case包中的类的基类，即测试用例类的基类
  */
 @ExtendWith(ExtensionModel.class)
+
 public class TestCaseBase {
     private static final Logger logger = LogService.getInstance(TestCaseBase.class).getLogger();
     public static WebDriver driver;
@@ -85,7 +87,7 @@ public class TestCaseBase {
         List<CaseObjectModel> testCaseList=null;
         try {
             //TypeReference typeReference = new TypeReference<List<CaseObjectModel>>() {};
-            InputStream caseStream = ContactsPageTest.class.getResourceAsStream(filePath);
+            InputStream caseStream = TestCaseBase.class.getResourceAsStream(filePath);
             //System.out.println(caseStream);
             caseFileData = objectMapper.readValue(caseStream,CaseObjectModel.class);
             //变量替换
@@ -102,16 +104,16 @@ public class TestCaseBase {
     //返回定位方式，yaml文件中通过字符串指定，这里把字符串转换为真正的By
     public By getLocType(String locMode, String locExpression){
         By locType = null;
-        if (locMode.equals("by.id")){
+        if (locMode.equalsIgnoreCase("by.id")){
             locType = By.id(locExpression);
         }
-        if (locMode.equals("by.xpath")){
+        if (locMode.equalsIgnoreCase("by.xpath")){
             locType = By.xpath(locExpression);
         }
-        if (locMode.equals("by.name")){
+        if (locMode.equalsIgnoreCase("by.name")){
             locType = By.name(locExpression);
         }
-        if (locMode.equals("by.linkText")){
+        if (locMode.equalsIgnoreCase("by.linkText")){
             locType = By.linkText(locExpression);
         }
         return locType;

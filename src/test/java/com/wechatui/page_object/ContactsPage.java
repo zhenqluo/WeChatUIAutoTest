@@ -2,6 +2,7 @@ package com.wechatui.page_object;
 
 import com.wechatui.api.MemberManage;
 import com.wechatui.base.BasePage;
+import com.wechatui.utils.PathUtil;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -123,7 +124,8 @@ public class ContactsPage extends BasePage {
     public ContactsPage importTemplate(String filePath){
         click(bulkButtonLoc);
         click(fileImportLoc);
-        click(templateImportLoc);
+        //click(templateImportLoc);
+        filePath = PathUtil.getRootPath(filePath);
         sendKeys(fileInputLoc,filePath);
         click(selectDepLoc);
         //先点击取消右边已选择的部门

@@ -79,6 +79,15 @@ ToDo:
 8.截图
 9.更好的解决这个问题：org.openqa.selenium.StaleElementReferenceException: stale element reference: element is not attached to the page document
 
+todo:
+1.优化日志输出，LogService.getInstance(clzz).logException(ex)因为无法准确记录抛出异常的类，建议更换为logger.error(ex.toString(),ex);
+System.out.println(ex.getMessage());
+//Expected condition failed: waiting for presence of element located by: By.id: ss (tried for 3 second(s) with 500 milliseconds interval)
+System.out.println(ex.toString());
+//org.openqa.selenium.TimeoutException: Expected condition failed: waiting for presence of element located by: By.id: ss (tried for 3 second(s) with 500 milliseconds interval)
+
+
+
 日志框架参考文章：
 1）log4j2 实际使用详解:（备注：该文章有一个问题实战部分第2步 ”配置log2.xml“ 文件名有误，应该是log4j2.xml，否则找不到该配置文件，具体说明参考下一篇文章）
 https://monday.blog.csdn.net/article/details/71751835?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.pc_relevant_default&utm_relevant_index=2

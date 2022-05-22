@@ -23,9 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -70,7 +68,7 @@ public class ContactsPageTest extends TestCaseBase{
         //删除成员流程
         new MainPage(driver).gotoContacts().deleteMember(memberInfo);
 
-        assertFalse(isElemExist("By.xpath","//span[text()='"+memberInfo.get("name")+"']"));
+        assertTrue(isElemExist("By.Xpath","//div[@id='js_tips' and text()='删除成功']"));
     }
     @ParameterizedTest
     @MethodSource
@@ -135,6 +133,5 @@ public class ContactsPageTest extends TestCaseBase{
     static List<CaseObjectModel> importTemplateTest(){
         return readYamlCaseData("/member/import.yaml");
     }
-
 
 }
