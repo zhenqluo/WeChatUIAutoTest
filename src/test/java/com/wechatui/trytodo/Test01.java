@@ -7,36 +7,25 @@ import com.wechatui.api.CommonOpr;
 import com.wechatui.api.MemberManage;
 import com.wechatui.api.PartyManage;
 import com.wechatui.base.BasePage;
+import com.wechatui.test_case.ContactsPageTest;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
 import com.wechatui.page_object.MainPage;
-import com.wechatui.test_case.ContactsPageTest;
 import com.wechatui.utils.FakerUtils;
-import com.wechatui.utils.LogService;
-import com.wechatui.utils.PathUtil;
-import io.qameta.allure.Story;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author luo
  * @create 2022/4/17 上午9:09
  */
+@Disabled
 public class Test01 extends TestCaseBase{
     public static void main(String[] args) {
         HashMap<String ,Object> map = new HashMap<>();
@@ -202,17 +192,7 @@ public class Test01 extends TestCaseBase{
 
 
 
-    @Test
-    void test_12(){
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.baidu.com");
-        driver.manage().window().maximize();
-        try {
-            driver.findElement(By.id("xx")).click();
-        }catch (Exception ex){
-            LogService.getInstance().logException(ex);
-        }
-    }
+
     @Test
     void test_13(){
         MemberManage memberManage = new MemberManage();

@@ -12,6 +12,7 @@ import com.wechatui.utils.FakerUtils;
 import com.wechatui.utils.LogService;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PartyPageTest extends TestCaseBase {
     private final static Logger logger = LogService.getInstance(PartyPageTest.class).getLogger();
 
+    @Disabled
     @ParameterizedTest
     @MethodSource
     @Story("添加部门")
@@ -76,6 +78,7 @@ public class PartyPageTest extends TestCaseBase {
     ** 删除部门测试用例
      */
     //根部门->部门A->子部门A1（A1包含成员m1），删除部门A1，预期删除失败
+    @Disabled
     @Story("删除部门")
     @DisplayName("删除包含成员的部门，删除失败")
     @Test
@@ -99,6 +102,7 @@ public class PartyPageTest extends TestCaseBase {
         pm.deleteParty(res1.getId());
     }
     //根部门->部门A->子部门A1，删除部门A，预期删除失败
+    @Disabled
     @Test
     @Story("删除部门")
     @DisplayName("删除有子部门的部门，删除失败")
@@ -145,6 +149,7 @@ public class PartyPageTest extends TestCaseBase {
     * ----部门a
     * --部门B
      */
+    @Disabled
     @Story("更新部门")
     @DisplayName("修改部门名称与已存在的所有部门名称不一样，修改成功")
     @Test
@@ -176,6 +181,7 @@ public class PartyPageTest extends TestCaseBase {
         pm.deleteParty(res1.getId()); //todo:使用try catch finally来保证数据还原？
         pm.deleteParty(res2.getId());
     }
+    @Disabled
     @Story("更新部门")
     @DisplayName("修改部门名称与下级部门名称一样，修改成功")
     @Test

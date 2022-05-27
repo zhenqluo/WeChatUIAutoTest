@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
+@Disabled
 @ExtendWith(MyWatcher.class)
 public class BaiduTest extends BaseT{
     Logger logger = LogService.getInstance(BaiduTest.class).getLogger();

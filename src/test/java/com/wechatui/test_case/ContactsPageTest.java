@@ -9,7 +9,6 @@ import com.wechatui.page_object.ContactsPage;
 import com.wechatui.page_object.MainPage;
 import com.wechatui.utils.FakerUtils;
 import com.wechatui.utils.LogService;
-import io.qameta.allure.Allure;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
@@ -17,6 +16,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import org.openqa.selenium.By;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -31,11 +31,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * @create 2022/4/17 下午12:59
  */
 @Feature("成员管理")
-public class ContactsPageTest extends TestCaseBase{
+public class ContactsPageTest extends TestCaseBase {
     private static final Logger logger = LogService.getInstance(ContactsPageTest.class).getLogger();
     //该WebDriver使用static修饰是因为在@BeforeAll中进行了引用，这种情况下能不能把该WebDriver对象放进TestCaseBase.java中用于继承？
 
-
+    @Disabled
     @ParameterizedTest
     @MethodSource
     @Story("添加成员")
@@ -59,7 +59,7 @@ public class ContactsPageTest extends TestCaseBase{
     @Test
     @Story("删除成员")
     @DisplayName("删除成员")
-    void deleteMemberTest(){
+    void deleteMemberTest() throws Exception{
         logger.info("开始删除成员...");
         logger.info("先调用接口产生一个随机成员数据以供删除操作....");
         //接口创建临时成员
@@ -70,6 +70,14 @@ public class ContactsPageTest extends TestCaseBase{
 
         assertTrue(isElemExist("By.Xpath","//div[@id='js_tips' and text()='删除成功']"));
     }
+    @Test
+    void deleteMem(){
+        System.out.println("ContactsPageTest...........");
+        System.out.println(driver);
+        System.out.println(driver.getTitle());
+        driver.findElement( By.id("menu_contacts")).click();
+    }
+    @Disabled
     @ParameterizedTest
     @MethodSource
     @Story("更新成员信息")
@@ -116,6 +124,7 @@ public class ContactsPageTest extends TestCaseBase{
         specificMember.put("department",1);
         return specificMember;
     }
+    @Disabled
     @ParameterizedTest
     @MethodSource
     @Story("通过文件批量导入成员")

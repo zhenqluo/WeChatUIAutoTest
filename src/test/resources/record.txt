@@ -177,9 +177,11 @@ https://blog.csdn.net/hwijew/article/details/111546685
 JUnit5：如何重复失败的测试？(JUnit5: How to repeat failed test?)：https://www.656463.com/wenda/JUnit5ruhezhongfushibaideceshi_584
 
 
+测试开发基础 mvn test | 利用 Maven Surefire Plugin 做测试用例基础执行管理：https://zhuanlan.zhihu.com/p/451948645
+maven命令行执行test时报编码GBK的不可映射字符：https://www.jianshu.com/p/d6eecf0291e3
 
 
-
+Junit5并发测试配置方法总结：https://blog.csdn.net/elecforest/article/details/109580723
 
 
 

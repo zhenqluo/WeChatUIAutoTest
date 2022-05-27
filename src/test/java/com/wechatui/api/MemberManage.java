@@ -69,4 +69,5 @@ public class MemberManage {
         logger.info("调用接口删除成员userid:{}",userid);
         given().get("https://qyapi.weixin.qq.com/cgi-bin/user/delete?access_token="+CommonOpr.getAccessToken()+"&userid="+userid);
     }
+
 }

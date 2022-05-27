@@ -6,25 +6,27 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
 import com.wechatui.model.ExtensionModel;
-import com.wechatui.test_case.ContactsPageTest;
+import com.wechatui.page_object.LoginPage;
 import com.wechatui.utils.LogService;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.function.Executable;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -50,8 +52,18 @@ public class TestCaseBase {
 
 
     @BeforeAll
-    static void init(){
-        driver = new ChromeDriver();
+    public static void init() throws Exception{
+        DesiredCapabilities cap = DesiredCapabilities.chrome();
+        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--disable-infobars");  // 禁止策略化
+//        options.addArguments("--no-sandbox"); // 解决DevToolsActivePort文件不存在的报错
+//        cap.setAcceptInsecureCerts(true);
+//        cap.setJavascriptEnabled(true);
+//        cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS,true);
+//        cap.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS,true);
+//        cap.setCapability(ChromeOptions.CAPABILITY,options);
+        WebDriver driver = new RemoteWebDriver(new URL("http://192.168.162.130:4444/wd/hub"), cap);
+//        driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver,5);
@@ -59,6 +71,9 @@ public class TestCaseBase {
         File cookieFile = new File("cookie.yaml");
 
         driver.get("https://work.weixin.qq.com/wework_admin/frame");
+        //使用分布式测试时selenium_node的浏览器是英文版的，企业微信默认为英文版，所以需先切换为中文版
+        System.out.println("初始化："+driver);
+        new LoginPage(driver).switchChinese();
         if (!cookieFile.exists()){
             try {
                 Thread.sleep(25000);
@@ -80,6 +95,12 @@ public class TestCaseBase {
                 e.printStackTrace();
             }
         }
+        System.out.println("BasePageEnd");
+        System.out.println(driver);
+    }
+    @AfterAll
+    public static void end(){
+        driver.quit();
     }
 
     public static List<CaseObjectModel> readYamlCaseData(String filePath){

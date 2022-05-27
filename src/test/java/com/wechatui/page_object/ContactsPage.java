@@ -124,7 +124,7 @@ public class ContactsPage extends BasePage {
     public ContactsPage importTemplate(String filePath){
         click(bulkButtonLoc);
         click(fileImportLoc);
-        //click(templateImportLoc);
+        click(templateImportLoc);
         filePath = PathUtil.getRootPath(filePath);
         sendKeys(fileInputLoc,filePath);
         click(selectDepLoc);

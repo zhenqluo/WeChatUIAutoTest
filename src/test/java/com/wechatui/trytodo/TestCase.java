@@ -8,6 +8,7 @@ import com.wechatui.model.CaseObjectModel;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,6 +29,7 @@ import java.util.Set;
  * @author luo
  * @create 2022/4/16 下午4:44
  */
+@Disabled
 @Feature("成员管理")
 public class TestCase  extends TestCaseBase {
     @ParameterizedTest
