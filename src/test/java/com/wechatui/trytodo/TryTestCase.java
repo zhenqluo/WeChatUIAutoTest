@@ -31,7 +31,7 @@ import java.util.Set;
  */
 @Disabled
 @Feature("成员管理")
-public class TestCase  extends TestCaseBase {
+public class TryTestCase extends TestCaseBase {
     @ParameterizedTest
     @MethodSource
     @Story("更新成员")
@@ -44,7 +44,7 @@ public class TestCase  extends TestCaseBase {
     }
     @Test
     @Story("删除成员")
-    @DisplayName("")
+    @DisplayName("test")
     void test_02(){
         System.out.println("02");
     }

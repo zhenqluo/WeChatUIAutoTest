@@ -3,7 +3,6 @@ package com.wechatui.trytodo;
 import com.wechatui.api.MemberManage;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.page_object.ContactsPage;
-import com.wechatui.trytodo.tyeone.three.TempClzz;
 import com.wechatui.utils.LogService;
 import com.wechatui.utils.PathUtil;
 import org.junit.jupiter.api.*;
@@ -26,9 +25,9 @@ import java.util.HashMap;
  * @create 2022-05-2022/5/21 16:47
  */
 @Disabled
-public class Test02 {
+public class TryTest02 {
     //Logger logger = LogService.getInstance(Test02.class).getLogger();
-    Logger logger = LoggerFactory.getLogger(Test02.class);
+    Logger logger = LoggerFactory.getLogger(TryTest02.class);
     //private final static WebDriver driver = new ChromeDriver();
     private static WebDriver driver;
 
@@ -56,7 +55,7 @@ public class Test02 {
             //org.openqa.selenium.TimeoutException: Expected condition failed: waiting for presence of element located by: By.id: ss (tried for 3 second(s) with 500 milliseconds interval)
 
             //logger.error(ex.getMessage(),ex);
-            LogService.getInstance(Test02.class).logException(ex);
+            LogService.getInstance(TryTest02.class).logException(ex);
 
         }
     }
@@ -89,10 +88,11 @@ public class Test02 {
     @Test
     void test_14() throws Exception{
         TestCaseBase.init();
+        System.out.println(TestCaseBase.driver);
         MemberManage memberManage = new MemberManage();
         HashMap<String,Object> memberInfo = memberManage.addMember(null);
+        System.out.println(TestCaseBase.driver);
         new ContactsPage(TestCaseBase.driver).deleteMember(memberInfo);
-
     }
     @BeforeAll
     static void init() throws Exception{
@@ -109,10 +109,7 @@ public class Test02 {
         driver.get("https://www.baidu.com");
         driver.manage().window().maximize();
     }
-    @Test
-    void test_15() throws Exception{
-        new TempClzz(driver).search();
-    }
+
     @AfterAll
     static void quit(){
         driver.quit();

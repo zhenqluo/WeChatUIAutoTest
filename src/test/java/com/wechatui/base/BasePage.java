@@ -57,7 +57,7 @@ public class BasePage {
             // 如果不抛出，因为所有操作都捕抓了异常，导致下一个流程步骤可继续执行，假如每一个流程都是元素定位，导致不断的等待超时抛出异常，最后需超长等待才能发现流程问题
             throw new RuntimeException(ex.getMessage());
         }
-        //sleep(0.5);//为方便观察调试临时添加
+        //sleep(2);//为方便观察调试临时添加
     }
     public void judgeToSendKeys(By loc, HashMap<String,Object> map, String key){
         if (map.get(key) != null){//map.get(key) != null包含了没key和有key但没value的情况

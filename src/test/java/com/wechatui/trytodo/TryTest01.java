@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @create 2022/4/17 上午9:09
  */
 @Disabled
-public class Test01 extends TestCaseBase{
+public class TryTest01 extends TestCaseBase{
     public static void main(String[] args) {
         HashMap<String ,Object> map = new HashMap<>();
         map.put("a",1);
@@ -173,7 +173,7 @@ public class Test01 extends TestCaseBase{
     @Test
     void test_10() throws Exception{
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-        CaseObjectModel caseObjectModel=objectMapper.readValue(Test01.class.getResourceAsStream("/member/add_ramdom.yaml"), CaseObjectModel.class);
+        CaseObjectModel caseObjectModel=objectMapper.readValue(TryTest01.class.getResourceAsStream("/member/add_ramdom.yaml"), CaseObjectModel.class);
         caseObjectModel.getActualValue();
         System.out.println(caseObjectModel.getData().get(0).getParameters().get("username"));
         System.out.println(caseObjectModel.getData().get(1).getParameters().get("username"));

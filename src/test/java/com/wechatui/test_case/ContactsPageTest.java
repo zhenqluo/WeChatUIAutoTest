@@ -70,13 +70,6 @@ public class ContactsPageTest extends TestCaseBase {
 
         assertTrue(isElemExist("By.Xpath","//div[@id='js_tips' and text()='删除成功']"));
     }
-    @Test
-    void deleteMem(){
-        System.out.println("ContactsPageTest...........");
-        System.out.println(driver);
-        System.out.println(driver.getTitle());
-        driver.findElement( By.id("menu_contacts")).click();
-    }
     @Disabled
     @ParameterizedTest
     @MethodSource
