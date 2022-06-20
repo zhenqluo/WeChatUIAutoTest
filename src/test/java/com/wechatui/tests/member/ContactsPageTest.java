@@ -1,14 +1,15 @@
-package com.wechatui.test_case;
+package com.wechatui.tests.member;
 
 
 import com.wechatui.api.MemberManage;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
-import com.wechatui.page_object.ContactsPage;
-import com.wechatui.page_object.MainPage;
+import com.wechatui.pages.member.ContactsPage;
+import com.wechatui.pages.MainPage;
 import com.wechatui.utils.FakerUtils;
 import com.wechatui.utils.LogService;
+import com.wechatui.utils.PathUtil;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
@@ -16,7 +17,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import org.openqa.selenium.By;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class ContactsPageTest extends TestCaseBase {
     private static final Logger logger = LogService.getInstance(ContactsPageTest.class).getLogger();
     //该WebDriver使用static修饰是因为在@BeforeAll中进行了引用，这种情况下能不能把该WebDriver对象放进TestCaseBase.java中用于继承？
 
-    @Disabled
+
     @ParameterizedTest
     @MethodSource
     @Story("添加成员")
@@ -53,10 +53,12 @@ public class ContactsPageTest extends TestCaseBase {
     }
 
     static List<CaseObjectModel> addMemberTest(){
-        return readYamlCaseData("/member/add_ramdom.yaml");
+        //return readYamlCaseData("/testdata/qa/member/addMemberTest.yaml");
+        return readYamlCaseData(PathUtil.getTestDataFilePath(getDefaultYamlFileName()));
     }
 
     @Test
+    @Disabled
     @Story("删除成员")
     @DisplayName("删除成员")
     void deleteMemberTest() throws Exception{
@@ -102,7 +104,7 @@ public class ContactsPageTest extends TestCaseBase {
         memberManage.deleteMember(specificMember.get("userid").toString());
     }
     static List<CaseObjectModel> updateMemberTest(){
-        return readYamlCaseData("/member/updateMember.yaml");
+        return readYamlCaseData(PathUtil.getTestDataFilePath(getDefaultYamlFileName()));
     }
     private HashMap<String,Object> createSpecificMemberInfo(){
         HashMap<String,Object> specificMember = new HashMap<>();
@@ -124,16 +126,18 @@ public class ContactsPageTest extends TestCaseBase {
     void importTemplateTest(CaseObjectModel caseObject){
         //todo:导入前数据清理,读入文件数据，根据账号调用接口删除数据。或通过生成随机数的方式生成批量数据文件，最后恢复数据
         new MemberManage().deleteMember("lisi");
-        String filePath = caseObject.getData().get(0).getParameters().get("filePath").toString();
-        logger.info("批量导入成员测试，导入文件地址：{}",filePath);
-        new MainPage(driver).gotoContacts().importTemplate(filePath);
+        String fileName = caseObject.getData().get(0).getParameters().get("filePath").toString();
+        String relativePath = PathUtil.getTestDataFilePath(fileName);
+        String absolutePath = PathUtil.getRootPath(relativePath);
+        logger.info("批量导入成员测试，导入文件地址：{}",absolutePath);
+        new MainPage(driver).gotoContacts().importTemplate(absolutePath);
         //取yaml文件中的断言信息asserts，并断言
         ArrayList<AssertModel> asserts = caseObject.getData().get(caseObject.getIndex()).getAsserts();
         //统一断言
         assertAll("",getAseertExec(asserts).stream());
     }
     static List<CaseObjectModel> importTemplateTest(){
-        return readYamlCaseData("/member/import.yaml");
+        return readYamlCaseData(PathUtil.getTestDataFilePath(getDefaultYamlFileName()));
     }
 
 }

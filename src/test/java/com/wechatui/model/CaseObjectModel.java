@@ -95,7 +95,8 @@ public class CaseObjectModel {
                 tempParams.put(key,actual);
             }
 
-            //通过遍历完成CaseDataObjectModel中asserts属性中出现的$(..)变量替换 ， 验证代码对应testcase为Test01.java的test_08和test_09
+            //通过遍历完成CaseDataObjectModel中asserts属性中出现的${..}变量替换 ， 验证代码对应testcase为Test01.java的test_08和test_09
+            //add_ramdom.yaml文件中actual: {isElemExist: ["by.xpath","//span[text()='${username}']"]}
             for (AssertModel assertModel:caseData.getAsserts()){
                 HashMap<String,ArrayList<String>> stepMap=assertModel.getActual(); //取得actual值，是HashMap结构
 

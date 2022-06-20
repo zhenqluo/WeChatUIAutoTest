@@ -1,4 +1,4 @@
-package com.wechatui.page_object;
+package com.wechatui.pages;
 
 import com.wechatui.base.BasePage;
 import com.wechatui.utils.LogService;
@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 

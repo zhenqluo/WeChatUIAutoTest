@@ -111,6 +111,9 @@ Log4j2使用的几个点：
 虽然这样做通过异常捕获可判断元素不存在，但时间会浪费5s且有异常抛出。还可以使用下面的方式：
 new WebDriverWait(driver, 10).until(ExpectedConditions.invisibilityOfElementLocated(locator));
 参考文章：https://www.it1352.com/968887.html
+总结一下UI层面的断言：断言使用的是页面变化的元素，比如操作后某个元素不见了或出现了，那就使用该元素来进行断言，
+1）如果是元素不见了则使用ExpectedConditions.invisibilityOfElementLocated
+2）如果是元素出现了则使用ExpectedConditions.presenceOfElementLocated
 
 Selenium 中ExpectedConditions 用法说明（最全整理）
 https://blog.csdn.net/qq_39704682/article/details/85596644
@@ -183,6 +186,9 @@ maven命令行执行test时报编码GBK的不可映射字符：https://www.jians
 
 Junit5并发测试配置方法总结：https://blog.csdn.net/elecforest/article/details/109580723
 
+Junit5新特性：http://www.what21.com/article/view/a_3_1481375703713.html
+
+java 8 新特性 Stream流常用方法操作（一）：https://www.bilibili.com/read/cv14222552
 
 
 

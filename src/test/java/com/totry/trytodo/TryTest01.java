@@ -1,4 +1,4 @@
-package com.wechatui.trytodo;
+package com.totry.trytodo;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,11 +7,11 @@ import com.wechatui.api.CommonOpr;
 import com.wechatui.api.MemberManage;
 import com.wechatui.api.PartyManage;
 import com.wechatui.base.BasePage;
-import com.wechatui.test_case.ContactsPageTest;
+import com.wechatui.tests.member.ContactsPageTest;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
-import com.wechatui.page_object.MainPage;
+import com.wechatui.pages.MainPage;
 import com.wechatui.utils.FakerUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
@@ -91,7 +91,7 @@ public class TryTest01 extends TestCaseBase{
     void test_06() throws Exception{
         TypeReference<ArrayList<AssertModel>> typeReference = new TypeReference<ArrayList<AssertModel>>() {};
         ObjectMapper om = new ObjectMapper(new YAMLFactory());
-        ArrayList<AssertModel>  modelList = om.readValue(this.getClass().getResourceAsStream("/member/assertModel.yaml"),typeReference);
+        ArrayList<AssertModel>  modelList = om.readValue(this.getClass().getResourceAsStream("/trydata/assertModel.yaml"),typeReference);
         TestCaseBase testCaseBase = new TestCaseBase();
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -173,7 +173,7 @@ public class TryTest01 extends TestCaseBase{
     @Test
     void test_10() throws Exception{
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-        CaseObjectModel caseObjectModel=objectMapper.readValue(TryTest01.class.getResourceAsStream("/member/add_ramdom.yaml"), CaseObjectModel.class);
+        CaseObjectModel caseObjectModel=objectMapper.readValue(TryTest01.class.getResourceAsStream("/testdata/qa/member/addMemberTest.yaml"), CaseObjectModel.class);
         caseObjectModel.getActualValue();
         System.out.println(caseObjectModel.getData().get(0).getParameters().get("username"));
         System.out.println(caseObjectModel.getData().get(1).getParameters().get("username"));

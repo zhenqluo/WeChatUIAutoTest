@@ -1,20 +1,19 @@
-package com.wechatui.test_case;
+package com.wechatui.tests;
 
 import com.wechatui.api.MemberManage;
 import com.wechatui.api.PartyManage;
-import com.wechatui.base.BasePage;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.model.ApiResponseModel;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
-import com.wechatui.page_object.MainPage;
+import com.wechatui.pages.MainPage;
 import com.wechatui.utils.FakerUtils;
 import com.wechatui.utils.LogService;
+import com.wechatui.utils.PathUtil;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -35,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PartyPageTest extends TestCaseBase {
     private final static Logger logger = LogService.getInstance(PartyPageTest.class).getLogger();
 
-    @Disabled
     @ParameterizedTest
     @MethodSource
     @Story("添加部门")
@@ -71,7 +69,7 @@ public class PartyPageTest extends TestCaseBase {
 
     }
     static List<CaseObjectModel> addPartyTest(){
-        return readYamlCaseData("/party/addParty.yaml");
+        return readYamlCaseData(PathUtil.getTestDataFilePath(getDefaultYamlFileName()));
     }
 
     /*
@@ -123,6 +121,7 @@ public class PartyPageTest extends TestCaseBase {
         pm.deleteParty(res1.getId());
     }
     //根部门->部门A，删除部门A，预期删除成功
+    @Disabled
     @Test
     @Story("删除部门")
     @DisplayName("删除的部门既没有子部门也没有成员，删除成功")

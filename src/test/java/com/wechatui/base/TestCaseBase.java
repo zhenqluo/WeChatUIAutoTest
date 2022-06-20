@@ -6,16 +6,18 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.wechatui.model.AssertModel;
 import com.wechatui.model.CaseObjectModel;
 import com.wechatui.model.ExtensionModel;
-import com.wechatui.page_object.LoginPage;
+import com.wechatui.pages.LoginPage;
 import com.wechatui.utils.LogService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,9 +27,12 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -54,6 +59,7 @@ public class TestCaseBase {
 
     @BeforeAll
     public static void init() throws Exception{
+
         DesiredCapabilities cap = DesiredCapabilities.chrome();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-infobars");  // 禁止策略化
@@ -64,7 +70,11 @@ public class TestCaseBase {
         cap.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS,true);
         cap.setCapability(ChromeOptions.CAPABILITY,options);
         driver = new RemoteWebDriver(new URL("http://192.168.162.130:4444/wd/hub"), cap);
-//        driver = new ChromeDriver();
+
+
+
+        //driver = new ChromeDriver();
+
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver,5);
@@ -102,20 +112,28 @@ public class TestCaseBase {
     }
 
     public static List<CaseObjectModel> readYamlCaseData(String filePath){
+
         CaseObjectModel caseFileData=null;
         List<CaseObjectModel> testCaseList=null;
-        try {
-            //TypeReference typeReference = new TypeReference<List<CaseObjectModel>>() {};
-            InputStream caseStream = TestCaseBase.class.getResourceAsStream(filePath);
-            //System.out.println(caseStream);
-            caseFileData = objectMapper.readValue(caseStream,CaseObjectModel.class);
+
+        //File file = new File(filePath);
+        InputStream caseStream = TestCaseBase.class.getResourceAsStream(filePath);
+        //if (file.exists()){  //不可使用此种方式判断文件是否存在，因为filePath是一个/../..相对文件路径，但使用class.getResourceAsStream()可以读取
+        if (caseStream != null){
+            try {
+                caseFileData = objectMapper.readValue(caseStream,CaseObjectModel.class);
+            }catch (Exception ex){
+                logger.error(ex.toString(),ex);
+            }
             //变量替换
             caseFileData.getActualValue();
             //case裂变根据data列表数据个数生成相应用例数量
             testCaseList=caseFileData.testcaseGenerate();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }else{
+            logger.error("测试数据文件{}不存在！！",filePath);
+            throw new RuntimeException(filePath+"不存在！！");
         }
+
         return testCaseList;
     }
 
@@ -242,6 +260,10 @@ public class TestCaseBase {
             });
         }
         return assertList;
+    }
+
+    protected static String getDefaultYamlFileName(){
+        return Thread.currentThread().getStackTrace()[2].getMethodName()+".yaml";
     }
 
 

@@ -1,15 +1,16 @@
-package com.wechatui.page_object;
+package com.wechatui.pages.member;
 
-import com.wechatui.api.MemberManage;
 import com.wechatui.base.BasePage;
 import com.wechatui.utils.PathUtil;
-import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
+import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.annotation.Retention;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -124,9 +125,27 @@ public class ContactsPage extends BasePage {
     public ContactsPage importTemplate(String filePath){
         click(bulkButtonLoc);
         click(fileImportLoc);
-        click(templateImportLoc);
-        filePath = PathUtil.getRootPath(filePath);
-        sendKeys(fileInputLoc,filePath);
+        /*
+        //click(templateImportLoc);
+        //filePath = PathUtil.getRootPath(filePath);
+        String relativePath = PathUtil.getTestDataFilePath(filePath);
+        String absolutePath = PathUtil.getRootPath(relativePath);
+        logger.info("批量导入成员测试，导入文件地址：{}",absolutePath);
+        //sendKeys(fileInputLoc,absolutePath);
+        sendKeys(fileInputLoc,absolutePath);
+        */
+        if (driver.getClass() == RemoteWebDriver.class && driver != null){
+            //参考：如何最好地处理Selenium Webdriver中的文件上传失败：https://www.codenong.com/48196109/
+            //参考：https://cloud.tencent.com/developer/ask/sof/411388/answer/664959
+            LocalFileDetector detector = new LocalFileDetector();
+            File localFile = detector.getLocalFile(filePath);
+            RemoteWebElement upload = (RemoteWebElement) driver.findElement(fileInputLoc);
+            upload.setFileDetector(detector);
+            upload.sendKeys(localFile.getAbsolutePath());//getAbsolutePath()获取绝对路径，本测试用例因为传入的就是绝对路径，所以可以直接传入形参filePath
+        }else {
+            sendKeys(fileInputLoc,filePath);
+        }
+
         click(selectDepLoc);
         //先点击取消右边已选择的部门
         List<WebElement> delEles = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(deleteSelectedLoc));

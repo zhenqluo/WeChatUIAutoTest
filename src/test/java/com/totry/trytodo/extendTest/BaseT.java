@@ -1,4 +1,4 @@
-package com.wechatui.trytodo.extendTest;
+package com.totry.trytodo.extendTest;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

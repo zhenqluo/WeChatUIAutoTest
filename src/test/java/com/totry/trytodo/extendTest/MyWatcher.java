@@ -1,15 +1,14 @@
-package com.wechatui.trytodo.extendTest;
+package com.totry.trytodo.extendTest;
 
 
 import com.wechatui.utils.LogService;
-import io.qameta.allure.model.Attachment;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestInstances;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+
 import static io.qameta.allure.Allure.addAttachment;
 
 

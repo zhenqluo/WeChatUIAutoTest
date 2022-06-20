@@ -1,4 +1,4 @@
-package com.wechatui.trytodo.extendTest;
+package com.totry.trytodo.extendTest;
 
 /**
  * @author law
@@ -14,9 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 

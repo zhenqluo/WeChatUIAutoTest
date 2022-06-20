@@ -1,6 +1,7 @@
-package com.wechatui.page_object;
+package com.wechatui.pages;
 
 import com.wechatui.base.BasePage;
+import com.wechatui.pages.member.ContactsPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

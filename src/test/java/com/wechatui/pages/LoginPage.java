@@ -1,4 +1,4 @@
-package com.wechatui.page_object;
+package com.wechatui.pages;
 
 import com.wechatui.base.BasePage;
 import org.openqa.selenium.By;

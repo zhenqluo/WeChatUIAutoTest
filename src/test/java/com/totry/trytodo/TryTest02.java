@@ -1,8 +1,8 @@
-package com.wechatui.trytodo;
+package com.totry.trytodo;
 
 import com.wechatui.api.MemberManage;
 import com.wechatui.base.TestCaseBase;
-import com.wechatui.page_object.ContactsPage;
+import com.wechatui.pages.member.ContactsPage;
 import com.wechatui.utils.LogService;
 import com.wechatui.utils.PathUtil;
 import org.junit.jupiter.api.*;
@@ -37,8 +37,8 @@ public class TryTest02 {
         System.out.println(Thread.currentThread().getContextClassLoader().getResource("").getPath());
         System.out.println(PathUtil.classPath);
         System.out.println(PathUtil.getRootPath());
-        System.out.println(PathUtil.getRootPath("/member/add.yaml").replaceAll("\\{1,}","\\"));
-        System.out.println(PathUtil.getRootPath("member/add.yaml"));
+        System.out.println(PathUtil.getRootPath("/testdata/qa/member/add.yaml").replaceAll("\\{1,}","\\"));
+        System.out.println(PathUtil.getRootPath("testdata/qa/member/add.yaml"));
         System.out.println(PathUtil.getRootPath("\\member\\add.yaml"));
         System.out.println(PathUtil.getRootPath("member\\add.yaml"));
     }
