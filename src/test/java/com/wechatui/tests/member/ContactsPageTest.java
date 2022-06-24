@@ -18,6 +18,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @Feature("成员管理")
 public class ContactsPageTest extends TestCaseBase {
-    private static final Logger logger = LogService.getInstance(ContactsPageTest.class).getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(ContactsPageTest.class);
     //该WebDriver使用static修饰是因为在@BeforeAll中进行了引用，这种情况下能不能把该WebDriver对象放进TestCaseBase.java中用于继承？
 
 
@@ -44,7 +45,7 @@ public class ContactsPageTest extends TestCaseBase {
         //测试数据中的变量替换
 
         //测试用例的测试步骤
-        new MainPage(driver).gotoAddMember().addMember(caseObject.getData().get(caseObject.getIndex()).getParameters());
+        new MainPage(uiMutual).gotoAddMember().addMember(caseObject.getData().get(caseObject.getIndex()).getParameters());
         //下面开始写测试用例的断言，测试用例的断言支持多重断言、软断言，参考霍格沃兹接口测试框架StepModel类133-143行和ApiTestCaseModel类的113-116行代码
         //取yaml文件中的断言信息asserts，并断言
         ArrayList<AssertModel> asserts = caseObject.getData().get(caseObject.getIndex()).getAsserts();
@@ -58,7 +59,6 @@ public class ContactsPageTest extends TestCaseBase {
     }
 
     @Test
-    @Disabled
     @Story("删除成员")
     @DisplayName("删除成员")
     void deleteMemberTest() throws Exception{
@@ -68,11 +68,10 @@ public class ContactsPageTest extends TestCaseBase {
         MemberManage memberManage = new MemberManage();
         HashMap<String,Object> memberInfo = memberManage.addMember(null);
         //删除成员流程
-        new MainPage(driver).gotoContacts().deleteMember(memberInfo);
+        new MainPage(uiMutual).gotoContacts().deleteMember(memberInfo);
 
         assertTrue(isElemExist("By.Xpath","//div[@id='js_tips' and text()='删除成功']"));
     }
-    @Disabled
     @ParameterizedTest
     @MethodSource
     @Story("更新成员信息")
@@ -88,7 +87,7 @@ public class ContactsPageTest extends TestCaseBase {
         //接口创建已知信息的成员
         HashMap<String,Object> specificMember=memberManage.addMember(createSpecificMemberInfo());
         //成员流程
-        ContactsPage contactsPage = new MainPage(driver).gotoContacts();
+        ContactsPage contactsPage = new MainPage(uiMutual).gotoContacts();
         contactsPage.updateMember(ramdomMember.get("userid").toString(),caseObject.getData().get(caseObject.getIndex()).getParameters());
         //断言：使用页面是否还有保存或取消按钮
         ArrayList<AssertModel> asserts = caseObject.getData().get(caseObject.getIndex()).getAsserts();
@@ -119,7 +118,6 @@ public class ContactsPageTest extends TestCaseBase {
         specificMember.put("department",1);
         return specificMember;
     }
-    @Disabled
     @ParameterizedTest
     @MethodSource
     @Story("通过文件批量导入成员")
@@ -130,7 +128,7 @@ public class ContactsPageTest extends TestCaseBase {
         String relativePath = PathUtil.getTestDataFilePath(fileName);
         String absolutePath = PathUtil.getRootPath(relativePath);
         logger.info("批量导入成员测试，导入文件地址：{}",absolutePath);
-        new MainPage(driver).gotoContacts().importTemplate(absolutePath);
+        new MainPage(uiMutual).gotoContacts().importTemplate(absolutePath);
         //取yaml文件中的断言信息asserts，并断言
         ArrayList<AssertModel> asserts = caseObject.getData().get(caseObject.getIndex()).getAsserts();
         //统一断言

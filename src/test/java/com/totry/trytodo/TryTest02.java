@@ -55,7 +55,7 @@ public class TryTest02 {
             //org.openqa.selenium.TimeoutException: Expected condition failed: waiting for presence of element located by: By.id: ss (tried for 3 second(s) with 500 milliseconds interval)
 
             //logger.error(ex.getMessage(),ex);
-            LogService.getInstance(TryTest02.class).logException(ex);
+            logger.error(ex.toString(),ex);
 
         }
     }
@@ -79,7 +79,7 @@ public class TryTest02 {
             driver.findElement(By.id("su")).click();
             Thread.sleep(5000);
         }catch (Exception ex){
-            LogService.getInstance().logException(ex);
+            logger.error(ex.toString(),ex);
         }
         Assertions.assertEquals("selenium_百度搜索",driver.getTitle());
         //driver.quit();
@@ -88,11 +88,9 @@ public class TryTest02 {
     @Test
     void test_14() throws Exception{
         TestCaseBase.init();
-        System.out.println(TestCaseBase.driver);
         MemberManage memberManage = new MemberManage();
         HashMap<String,Object> memberInfo = memberManage.addMember(null);
-        System.out.println(TestCaseBase.driver);
-        new ContactsPage(TestCaseBase.driver).deleteMember(memberInfo);
+        new ContactsPage(TestCaseBase.uiMutual).deleteMember(memberInfo);
     }
     @BeforeAll
     static void init() throws Exception{

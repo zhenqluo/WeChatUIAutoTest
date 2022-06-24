@@ -1,18 +1,26 @@
 package com.wechatui.model;
 
-import com.wechatui.utils.LogService;
+import com.wechatui.base.UiMutual;
+import io.qameta.allure.Allure;
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.junit.platform.engine.TestExecutionResult;
+import org.junit.platform.engine.TestTag;
 import org.junit.platform.launcher.TestExecutionListener;
 import org.junit.platform.launcher.TestIdentifier;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Set;
 
 import static io.qameta.allure.Allure.addAttachment;
 
@@ -20,14 +28,15 @@ import static io.qameta.allure.Allure.addAttachment;
  * @author law
  * @create 2022-05-2022/5/18 21:52
  */
-public class ExtensionModel implements TestWatcher {
-    Logger logger = LogService.getInstance(ExtensionModel.class).getLogger();
+public class TFExtensionModel implements TestWatcher, BeforeTestExecutionCallback, AfterTestExecutionCallback {
+    Logger logger = LoggerFactory.getLogger(TFExtensionModel.class);
     /*
     因为在TestWatcher集中处理异常时打印出的日志行号不正确（因为打印的是调用日志输出函数所在行，所以打印出的行号都是一样的），不利于排错
     所以在不在TestWatcher中进行异常日志处理
      */
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {  //测试用例断言失败
+        logger.error(cause.toString(),cause);
         logger.info("执行用例标题[{}],执行结果{}\n",context.getDisplayName(), "Test Failed");
         screenShot(context,cause,"TestFailedScreenshot");
     }
@@ -37,23 +46,46 @@ public class ExtensionModel implements TestWatcher {
     }
     @Override
     public void testAborted(ExtensionContext context, Throwable cause) { //测试执行中止，如执行用例过程中抛出异常
+        logger.error(cause.toString(),cause);
         logger.info("执行用例标题[{}],执行结果{}\n",context.getDisplayName(),"Test Aborted");
         screenShot(context,cause,"TestAbortedScreenshot");
     }
+    @Override
+    public void beforeTestExecution(ExtensionContext context) throws Exception {
+        StringBuffer sb = new StringBuffer();
+        sb.append(getTimeString()+"\n");
+        sb.append(context.getDisplayName()+"\n");
+        sb.append(context.getRequiredTestClass().getSimpleName()+"\n");
+        sb.append(context.getTestMethod().get().getName()+"\n");
+        getStore(context).put("logs",sb.toString());
+    }
+    @Override
+    public void afterTestExecution(ExtensionContext context) throws Exception {
+        final String timeLogs = "开始时间："+getStore(context).remove("logs").toString()+"\n结束时间："+getTimeString();
 
-
+        Allure.addAttachment("运行时间",timeLogs);
+    }
+    private ExtensionContext.Store getStore(ExtensionContext context) {
+        return context.getStore(ExtensionContext.Namespace.create(context.getUniqueId(),context));
+    }
+    public String  getTimeString(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+        String timeString = simpleDateFormat.format(new Date());
+        simpleDateFormat = null;
+        return timeString;
+    }
 
     private void screenShot(ExtensionContext context, Throwable cause, String name){
         Object requiredTestInstance = context.getRequiredTestInstance();
         try {
             //下面获取driver属性报错java.lang.NoSuchFieldException: driver，因为driver是从父类继承来的
             //Field f = context.getRequiredTestClass().getDeclaredField("driver");
-            Field f = context.getRequiredTestClass().getField("driver");
-            Object obj = f.get(requiredTestInstance);
-            File screenshotFile = ((TakesScreenshot) obj).getScreenshotAs(OutputType.FILE);
+            Field f = context.getRequiredTestClass().getField("uiMutual");
+            UiMutual obj = (UiMutual)f.get(requiredTestInstance);
+            File screenshotFile = ((TakesScreenshot) obj.getDriver()).getScreenshotAs(OutputType.FILE);
             addAttachment(name, FileUtils.openInputStream(screenshotFile));
         }catch (Exception ex){
-            LogService.getInstance(ExtensionModel.class).logException(ex);
+            logger.error(ex.toString(),ex);
         }
     }
 }

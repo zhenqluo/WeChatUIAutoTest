@@ -5,6 +5,7 @@ import com.wechatui.utils.FakerUtils;
 import com.wechatui.utils.LogService;
 import io.restassured.response.Response;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
@@ -16,7 +17,7 @@ import static io.restassured.RestAssured.given;
  */
 public class MemberManage {
 
-    private static final Logger logger = LogService.getInstance(MemberManage.class).getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(MemberManage.class);
     public MemberManage(){ }
 
     //调用接口创建成员

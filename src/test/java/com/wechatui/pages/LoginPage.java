@@ -1,6 +1,7 @@
 package com.wechatui.pages;
 
 import com.wechatui.base.BasePage;
+import com.wechatui.base.UiMutual;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -12,13 +13,13 @@ public class LoginPage extends BasePage {
     private By changeLanLoc = By.xpath("//span[@class='ww_btn_Dropdown_arrow']");
     private By selectCNLoc = By.xpath("//li[@data-value='zh']");
 
-    public LoginPage(WebDriver driver) {
-        super(driver);
+    public LoginPage(UiMutual uiMutual) {
+        super(uiMutual);
     }
 
     public void switchChinese(){
-        click(changeLanLoc);
-        click(selectCNLoc);
+        uiMutual.click(changeLanLoc);
+        uiMutual.click(selectCNLoc);
     }
 
 }

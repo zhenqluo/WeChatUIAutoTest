@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ import static io.restassured.RestAssured.given;
  * 说明：本类是为验证UI融合API的可能性和实现，即API登录的cookie用在网页登录在网页保持登录态
  */
 public class UIFuseAPI {
-    static Logger logger = LogService.getInstance(UIFuseAPI.class).getLogger();
+    static Logger logger = LoggerFactory.getLogger(UIFuseAPI.class);
     public static void main(String[] args) {
         Response res = given().
                 header("user-agent","user-agent: Mozilla/5.0(Windows NT10.0;WOW64)AppleWebKit/537.36(KHTML, like Gecko)Chrome/78.0.3904.108 Safari/537.36").

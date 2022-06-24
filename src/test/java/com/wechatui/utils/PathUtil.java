@@ -7,6 +7,7 @@ package com.wechatui.utils;
 import com.wechatui.base.TestCaseBase;
 import com.wechatui.tests.member.ContactsPageTest;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -16,7 +17,7 @@ import java.io.File;
  */
 public class PathUtil {
 
-    private static final Logger logger = LogService.getInstance(ContactsPageTest.class).getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(PathUtil.class);
 
     public final static String classPath;
 
@@ -124,10 +125,10 @@ public class PathUtil {
         return testDataFilePath;
     }
     public static String getEvn(){
-        String env = System.getProperty("env").toLowerCase();
+        String env = System.getProperty("env");
 
-        if (env != null && (env.equals("qa") || env.equals("pro") || env.equals("uat")))
-            return env;
+        if (env != null && ("qa".equalsIgnoreCase(env) || "pro".equalsIgnoreCase(env) || "uat".equalsIgnoreCase(env)))
+            return env.toLowerCase();
         else{
             return "qa";
         }

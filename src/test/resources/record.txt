@@ -190,5 +190,6 @@ Junit5新特性：http://www.what21.com/article/view/a_3_1481375703713.html
 
 java 8 新特性 Stream流常用方法操作（一）：https://www.bilibili.com/read/cv14222552
 
-
-
+Rest-assured获取日志到文件并结合Allure报告进行展示：https://wenku.baidu.com/view/6779bbe00ba1284ac850ad02de80d4d8d15a0184.html
+restassured|把请求和响应写到allure2报告中实战：http://t.zoukankan.com/Durant0420-p-15003376.html
+AOP的实现的几种方式：https://blog.csdn.net/csujiangyu/article/details/53455094?spm=1001.2101.3001.6650.8&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-8-53455094-blog-104097667.pc_relevant_multi_platform_whitelistv1&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-8-53455094-blog-104097667.pc_relevant_multi_platform_whitelistv1

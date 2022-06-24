@@ -6,7 +6,6 @@ package com.totry.trytodo.extendTest;
  */
 
 
-import com.wechatui.utils.LogService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -15,13 +14,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
 @Disabled
 @ExtendWith(MyWatcher.class)
-public class BaiduTest extends BaseT{
-    Logger logger = LogService.getInstance(BaiduTest.class).getLogger();
+public class BaiduTestxx extends BaseT{
+    Logger logger = LoggerFactory.getLogger(BaiduTestxx.class);
     @BeforeAll
     static void setup(){
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);

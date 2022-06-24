@@ -98,7 +98,7 @@ public class TryTest01 extends TestCaseBase{
         driver.get("https://www.baidu.com");
         Thread.sleep(1000);
         WebDriverWait wait = new WebDriverWait(driver,5);
-        testCaseBase.wait=wait;
+
         ArrayList<Executable> excutList=testCaseBase.getAseertExec(modelList);
         assertAll(excutList.stream());
     }
@@ -178,17 +178,7 @@ public class TryTest01 extends TestCaseBase{
         System.out.println(caseObjectModel.getData().get(0).getParameters().get("username"));
         System.out.println(caseObjectModel.getData().get(1).getParameters().get("username"));
     }
-    @Test
-    void test_11(){
-        WebDriver driver = new ChromeDriver();
-        BasePage bp = new BasePage(driver);
-        driver.get("https://www.baidu.com");
-        bp.sleep(1);
-        bp.sendKeys(By.id("kw"),"hello");
-        bp.click(By.id("su"));
-        bp.sleep(3);
-        bp.closeBrowser();
-    }
+
 
 
 
@@ -309,6 +299,7 @@ public class TryTest01 extends TestCaseBase{
                 ()->assertTrue(false),
                 ()->assertTrue(true));
     }
+    /*
     @RepeatedTest(10)
     void test_22(){
         new MainPage(driver).gotoPartyManage().deletePartySubmit("LPH61Uwc");
@@ -321,6 +312,8 @@ public class TryTest01 extends TestCaseBase{
         long end = System.currentTimeMillis();
         System.out.println((end-st)/1000);
     }
+    */
+
 
 
 

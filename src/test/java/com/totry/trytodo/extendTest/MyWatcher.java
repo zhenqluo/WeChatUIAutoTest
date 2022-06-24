@@ -51,7 +51,7 @@ public class MyWatcher implements TestWatcher {
     public void testAborted(ExtensionContext context, Throwable cause) {
         System.out.println("testAborted");
         Object requiredTestInstance = context.getRequiredTestInstance();
-        BaiduTest bt = (BaiduTest)requiredTestInstance;
+        BaiduTestxx bt = (BaiduTestxx)requiredTestInstance;
         //context.getRequiredTestClass();
         try {
             Field f = context.getRequiredTestClass().getDeclaredField("driver");
@@ -73,7 +73,7 @@ public class MyWatcher implements TestWatcher {
         }
 
         Object requiredTestInstance = context.getRequiredTestInstance();
-        BaiduTest bt = (BaiduTest)requiredTestInstance;
+        BaiduTestxx bt = (BaiduTestxx)requiredTestInstance;
         //context.getRequiredTestClass();
         try {
             Field f = clzz.getField("driver");

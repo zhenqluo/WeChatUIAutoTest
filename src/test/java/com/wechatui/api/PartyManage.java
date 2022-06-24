@@ -5,6 +5,7 @@ import com.wechatui.model.ApiResponseModel;
 import com.wechatui.utils.FakerUtils;
 import com.wechatui.utils.LogService;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ import static io.restassured.RestAssured.given;
  * @create 2022/5/4 下午7:34
  */
 public class PartyManage {
-    private static final Logger logger = LogService.getInstance(PartyManage.class).getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(PartyManage.class);
     ObjectMapper objectMapper = new ObjectMapper();
 
     public ApiResponseModel getPartyList(){

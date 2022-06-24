@@ -1,16 +1,14 @@
 package com.wechatui.pages.member;
 
 import com.wechatui.base.BasePage;
-import com.wechatui.utils.PathUtil;
-import org.openqa.selenium.*;
-import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import com.wechatui.base.UiMutual;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,8 +18,8 @@ import java.util.List;
  */
 public class ContactsPage extends BasePage {
     private static final Logger logger = LoggerFactory.getLogger(ContactsPage.class);
-    public ContactsPage(WebDriver driver) {
-        super(driver);
+    public ContactsPage(UiMutual uiMutual) {
+        super(uiMutual);
     }
 
     //页面URL
@@ -67,31 +65,31 @@ public class ContactsPage extends BasePage {
         //open(URL);
         //sleep(1); 上一行打开URL后要强行等待一段时间，否则会有陈旧元素引用的问题，这里隐藏掉，在BasePage的open函数中统一添加，另外该方法的open(URL)也关闭，只保留mainpage的open(URL)
         logger.info("当前在添加成员页，开始添加成员{}",member.get("username"));
-        judgeToSendKeys(userNameLoc,member,"username");
-        judgeToSendKeys(englishNameLoc,member,"english_name");
-        judgeToSendKeys(acctidLoc,member,"acctid");
-        click(genderLoc);
-        clear(bizMailLoc);
-        judgeToSendKeys(bizMailLoc,member,"biz_mail");
-        clear(wwTelLoc);
-        judgeToSendKeys(wwTelLoc,member,"ww_tel");
-        judgeToSendKeys(mobileLoc,member,"mobile");
-        judgeToSendKeys(extTelLoc,member,"ext_tel");
-        judgeToSendKeys(xcxCorpAddressLoc,member,"xcx_corp_address");
-        judgeToSendKeys(aliasLoc,member,"alias");
-        judgeToSendKeys(positionLoc,member,"position");
-        click(sendInviteLoc);
-        click(saveLoc);
-        sleep(1);
+        uiMutual.judgeToSendKeys(userNameLoc,member,"username");
+        uiMutual.judgeToSendKeys(englishNameLoc,member,"english_name");
+        uiMutual.judgeToSendKeys(acctidLoc,member,"acctid");
+        uiMutual.click(genderLoc);
+        uiMutual.clear(bizMailLoc);
+        uiMutual.judgeToSendKeys(bizMailLoc,member,"biz_mail");
+        uiMutual.clear(wwTelLoc);
+        uiMutual.judgeToSendKeys(wwTelLoc,member,"ww_tel");
+        uiMutual.judgeToSendKeys(mobileLoc,member,"mobile");
+        uiMutual.judgeToSendKeys(extTelLoc,member,"ext_tel");
+        uiMutual.judgeToSendKeys(xcxCorpAddressLoc,member,"xcx_corp_address");
+        uiMutual.judgeToSendKeys(aliasLoc,member,"alias");
+        uiMutual.judgeToSendKeys(positionLoc,member,"position");
+        uiMutual.click(sendInviteLoc);
+        uiMutual.click(saveLoc);
+        uiMutual.sleep(1);
         logger.info("当前在添加成员页，添加成员{}操作结束",member.get("username"));
         return this;
     }
     public ContactsPage deleteMember(HashMap<String,Object> memberInfo){
         //页面删除流程
         logger.info("删除成员：{}",memberInfo.get("name"));
-        sendKeys(memberSearchInputLoc,memberInfo.get("name").toString());
-        click(delMemberLoc);
-        click(submitLoc);
+        uiMutual.sendKeys(memberSearchInputLoc,memberInfo.get("name").toString());
+        uiMutual.click(delMemberLoc);
+        uiMutual.click(submitLoc);
 
         return this;
     }
@@ -101,30 +99,31 @@ public class ContactsPage extends BasePage {
     public ContactsPage updateMember(String acctid,HashMap<String,Object> member){
         //更新成员信息
         logger.info("更新成员信息：acctid[{}]",acctid);
-        click(memberSearchInputLoc);
-        sendKeys(memberSearchInputLoc,acctid);
-        click(editLoc);
-        judgeToSendKeys(userNameLoc,member,"username");
-        judgeToSendKeys(englishNameLoc,member,"english_name");
-        clear(wwTelLoc);
-        judgeToSendKeys(wwTelLoc,member,"ww_tel");
-        judgeToSendKeys(mobileLoc,member,"mobile");
-        judgeToSendKeys(extTelLoc,member,"ext_tel");
-        judgeToSendKeys(xcxCorpAddressLoc,member,"xcx_corp_address");
-        judgeToSendKeys(aliasLoc,member,"alias");
-        judgeToSendKeys(positionLoc,member,"position");
-        click(saveLoc);
-        sleep(0.2);
+        uiMutual.click(memberSearchInputLoc);
+        uiMutual.sendKeys(memberSearchInputLoc,acctid);
+        uiMutual.click(editLoc);
+        uiMutual.judgeToSendKeys(userNameLoc,member,"username");
+        uiMutual.judgeToSendKeys(englishNameLoc,member,"english_name");
+        uiMutual.clear(wwTelLoc);
+        uiMutual.judgeToSendKeys(wwTelLoc,member,"ww_tel");
+        uiMutual.judgeToSendKeys(mobileLoc,member,"mobile");
+        uiMutual.judgeToSendKeys(extTelLoc,member,"ext_tel");
+        uiMutual.judgeToSendKeys(xcxCorpAddressLoc,member,"xcx_corp_address");
+        uiMutual.judgeToSendKeys(aliasLoc,member,"alias");
+        uiMutual.judgeToSendKeys(positionLoc,member,"position");
+        uiMutual.click(saveLoc);
+        uiMutual.sleep(0.2);
         return this;
     }
     public ContactsPage cancelUpdate(){
-        click(cancleLoc);
-        click(quitPageLoc);
+        uiMutual.click(cancleLoc);
+        uiMutual.click(quitPageLoc);
         return this;
     }
     public ContactsPage importTemplate(String filePath){
-        click(bulkButtonLoc);
-        click(fileImportLoc);
+        uiMutual.click(bulkButtonLoc);
+        uiMutual.click(fileImportLoc);
+        uiMutual.click(templateImportLoc);
         /*
         //click(templateImportLoc);
         //filePath = PathUtil.getRootPath(filePath);
@@ -134,51 +133,33 @@ public class ContactsPage extends BasePage {
         //sendKeys(fileInputLoc,absolutePath);
         sendKeys(fileInputLoc,absolutePath);
         */
-        if (driver.getClass() == RemoteWebDriver.class && driver != null){
-            //参考：如何最好地处理Selenium Webdriver中的文件上传失败：https://www.codenong.com/48196109/
-            //参考：https://cloud.tencent.com/developer/ask/sof/411388/answer/664959
-            LocalFileDetector detector = new LocalFileDetector();
-            File localFile = detector.getLocalFile(filePath);
-            RemoteWebElement upload = (RemoteWebElement) driver.findElement(fileInputLoc);
-            upload.setFileDetector(detector);
-            upload.sendKeys(localFile.getAbsolutePath());//getAbsolutePath()获取绝对路径，本测试用例因为传入的就是绝对路径，所以可以直接传入形参filePath
+        if (uiMutual.isRemoteExec()){ //判断是否为远程分布式执行
+            uiMutual.remoteFileUpload(fileInputLoc,filePath);
         }else {
-            sendKeys(fileInputLoc,filePath);
+            uiMutual.sendKeys(fileInputLoc,filePath);
         }
 
-        click(selectDepLoc);
+        uiMutual.click(selectDepLoc);
         //先点击取消右边已选择的部门
-        List<WebElement> delEles = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(deleteSelectedLoc));
-        for (WebElement ele : delEles){
-            try {
-                ele.click();
-            }catch (ElementNotInteractableException ex){  //上面找出的delEles包含两个元素，其中一个是不可交互的，不可交互的元素会抛出ElementNotInteractableException异常，这里进行处理
-            }
-        }
+        List<WebElement> delEles = uiMutual.getAllElements(deleteSelectedLoc);
+        uiMutual.interactiveElementsClick(delEles);
+
         //打开左边部门列表所有折叠的部门
-        List<WebElement> closedDeps=wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(liTreeCloseLoc));
-        for (WebElement ele : closedDeps){
-            ele.click();
-        }
+        List<WebElement> closedDeps = uiMutual.getAllElements(liTreeCloseLoc);
+        uiMutual.interactiveElementsClick(closedDeps);
+
         //找出所有部门，单击任意一个
-        List<WebElement> deps = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(allDepLoc));
+        List<WebElement> deps = uiMutual.getAllElements(allDepLoc);
         int index = (int) (Math.random()*(deps.size()));
         WebElement ele = deps.get(index);
         ele.click();
         logger.info("共有{}部门，随机点击第{}个",deps.size(),index+1);
         //点击选择部门页面的确认按钮
-        List<WebElement> selectedSubmitEles = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(selectedSubmitLoc));
-        for (WebElement elem : selectedSubmitEles){
-            try {
-                elem.click();
-            }catch (ElementNotInteractableException| StaleElementReferenceException ex){   //通过异常捕获忽略不可交互元素
-            }
-        }
-        click(importButtonLoc);
+        List<WebElement> selectedSubmitEles = uiMutual.getAllElements(selectedSubmitLoc);
+        uiMutual.interactiveElementsClick(selectedSubmitEles);
+
+        uiMutual.click(importButtonLoc);
         return this;
     }
-
-
-
 
 }

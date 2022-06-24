@@ -5,6 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.wechatui.model.ApiResponseModel;
 import com.wechatui.utils.LogService;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.restassured.RestAssured.given;
 
@@ -13,7 +14,7 @@ import static io.restassured.RestAssured.given;
  * @create 2022-04-2022/4/28 22:26
  */
 public class CommonOpr {
-    private static final Logger logger = LogService.getInstance(CommonOpr.class).getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(CommonOpr.class);
     private static String accessToken = null;
     private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -40,7 +41,7 @@ public class CommonOpr {
         try {
             resModel = objectMapper.readValue(res, ApiResponseModel.class);
         }catch (Exception ex){
-            LogService.getInstance(PartyManage.class).logException(ex);
+            logger.error(ex.toString(),ex);
         }
 
         return resModel;

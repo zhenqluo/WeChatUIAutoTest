@@ -16,6 +16,7 @@ import org.slf4j.spi.LocationAwareLogger;
  * @date 2017-4-25 下午4:01:24
  * @version V0.1
  */
+@Deprecated
 public final class LogService {
     private Logger logger = null;
     private static Map<Class, LogService> loggerList = new HashMap<>(); //用于缓存logger对象
@@ -46,13 +47,15 @@ public final class LogService {
         return logger;
     }
 
-
+    /*
     //在日志中记录异常跟踪栈信息
     public synchronized void logException(Exception e){
         StringWriter trace=new StringWriter();
         e.printStackTrace(new PrintWriter(trace));
         logger.error(trace.toString());
     }
+
+     */
 
 
 }
